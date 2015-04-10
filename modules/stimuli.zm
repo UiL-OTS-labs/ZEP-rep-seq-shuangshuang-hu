@@ -1,0 +1,78 @@
+/******************************************************************************\
+FILE:           stimuli.zm
+AUTHOR:         Theo Veenker (UiL-OTS) <T.J.G.Veenker@uu.nl>
+ADAPTED BY:     Chris van Run
+
+DESCRIPTION:
+
+Defines the formats of item table(s) and provides the actual content of
+the item table(s) i.e. stimulus information.
+
+
+HISTORY:
+2012-03-20 TV   Created.
+2014-05-26 CvR	Adapted (created an array reference for test_items)
+
+\******************************************************************************/
+
+
+// Item record used for the test phase item table.
+record TestItem
+{
+    string      tokens;         // target sequence of digits
+}
+
+TestItem[..] pretest_sequences = 
+{
+	{"A"},
+	{"B"},
+	{"B"},
+	{"A"},
+	{"B"},
+	{"B"},
+        {"A"},
+	{"A"},
+};
+
+TestItem[..] practice_sequences = 
+{
+	{"AB"},
+	{"AA"},
+	{"BAB"},
+};
+
+TestItem[..] seq_block1 = //AA, AB, BA, BB, AA, AB, BA, BB.
+{
+	{"AA"},
+	{"AB"},
+	{"BA"},
+	{"BB"},
+	{"AA"},
+	{"AB"},
+	{"BA"},
+	{"BB"},	
+};
+
+TestItem[..] seq_block2 = //AABA, AABB, ABAA, ABBA, BAAA, BAAB, BABB, BBAB
+{
+	{"AAB"}, 
+	{"ABB"}, 
+	{"ABA"}, 
+	{"BAA"}, 
+	{"BAB"}, 
+	{"BBA"}, 
+	{"BBB"}, 
+	{"AAA"},
+};
+
+TestItem[..] seq_block3 = //AABABA, AABBAB, ABAAAB, ABBABA, BAABBA, BABAAB, BBABAB, BBBABA
+{
+	{"AABA"}, 
+	{"AABB"}, 
+	{"ABAA"}, 
+	{"ABBA"}, 
+	{"BAAA"}, 
+	{"BAAB"}, 
+	{"BABB"}, 
+	{"BBAB"},
+};

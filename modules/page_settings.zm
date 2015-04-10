@@ -1,0 +1,34 @@
+/******************************************************************************\
+FILE:           page_settings.zm
+AUTHOR:         Chris van Run UiL-OTS (C.P.A.vanrun@uu.nl)
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines page transition delay and duration.
+
+
+HISTORY:
+2014-06-13 CvR   Created.
+
+\******************************************************************************/
+
+
+// Default page show delay. Used by pause, blank, etcal, entry and exit pages.
+dur             PAGE_TRANSITION_DELAY           = 500ms;
+const dur       MAX_PAGE_TRANSITION_DELAY       = 10000ms;
+
+
+// Default page transition duration.
+//dur             PAGE_TRANSITION_DURATION        = 0ms;
+dur             PAGE_TRANSITION_DURATION        = 200ms;
+const dur       MAX_PAGE_TRANSITION_DURATION    = 1000ms;
+
+
+// Default extra delay before first trial following a pause, blank, etcal or
+// entry page.
+dur             FIRST_TRIAL_EXTRA_DELAY         = 1000ms;
+const dur       MAX_FIRST_TRIAL_EXTRA_DELAY     = 10000ms;
+
+//can set this to ensure minimum duration of pause (used for all pauses; intruct, block, etc)
+const dur     	DISABLE_PAUSE_BUTTONS_DURATION			= 2s;				

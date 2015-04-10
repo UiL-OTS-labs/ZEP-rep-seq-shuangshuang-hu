@@ -1,0 +1,76 @@
+//namespace: test
+
+/******************************************************************************\
+FILE:           task.zm
+AUTHOR:         Chris van Run (UiL-OTS)
+ADAPTED BY:     -
+
+EXPERIMENT:     Repeat sequence task
+
+DESCRIPTION: This is the actual task block.
+
+HISTORY:
+2014-05-15 CvR   Created.
+
+\******************************************************************************/
+//import test_page;
+
+Block pretest
+	{
+		Part repeat_part_a;
+
+		Block pretest_task
+		{
+			int correct;
+
+			on_event:entry()
+			{
+				correct = 0;
+
+				num_cycles = TESTITEMS.size;		
+				// Prepare test page: no feedback, no progress bar, and prompt disabled.
+				test_page.setup(num_cycles, true, true, PRE_TEST_OVERLAY_TEXT);
+			}
+			
+			on_event:exit()
+			{
+				if(correct < NUMBER_OF_MINIMUM_CORRECT_PRETEST)
+				{
+					pretest.repeat_part_a.enter();
+				}			
+			}
+
+			Trial trial
+			{
+				on_event:entry()
+				{
+					TestItem item = TESTITEMS[pretest_task.cycle];
+					test_page.action(this, item, reference_time, pretest_task.cycle);
+				}
+				
+				on_event:exit()
+				{
+					if (test_page.response.correct != 1)
+						pretest_task.correct = 0;
+					else
+						pretest_task.correct++;
+					if (NUMBER_OF_MINIMUM_CORRECT_PRETEST > 0 && pretest_task.correct >= NUMBER_OF_MINIMUM_CORRECT_PRETEST)
+						pretest_task.num_cycles = pretest_task.cycle;
+					test_page.cleanup();
+				}
+			}
+		}
+	}
+
+void task_call(Part caller, dur t_response_dur, Part repeat_part_in)
+{
+	// set global variables
+	pretest.repeat_part_a = repeat_part_in;
+
+	TESTITEMS = pretest_sequences;
+	RESPONSE_DURATION = t_response_dur;
+	
+    // Activate the task. When the task is done, the registered caller
+    // (c.q. the main experiment object) will automatically be signalled.
+    pretest.enter(caller);
+}

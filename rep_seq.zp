@@ -1,0 +1,259 @@
+/******************************************************************************\
+FILE:           req_seq.zp
+AUTHOR:         Chris van Run (UiL-OTS) <C.P.A.vanRun@uu.nl>
+ADAPTED BY:     -
+
+EXPERIMENT:	Repeat sequence experiment
+
+DESCRIPTION: Participant is presented with an audio sequence of 'A' or 'B' and
+* has to press the corresponding buttons in the right order following the presentation.
+
+HISTORY:
+2014-06-10 CvR   Created.
+
+\******************************************************************************/
+
+requires 1.10;
+
+import std_windows1;
+
+import std_entry_page1;
+import std_exit_page1;
+import std_blank_page;
+
+import test_page;
+import pause_page;
+import texts_en; // contains al the text elements.
+import shuffle;
+import output;
+
+
+import train::training;
+
+import pre_test::task;
+
+import instruct::practice;
+
+import test::task;
+
+int BLOCK_NR; 				//global
+int TRIAL_NR;
+dur RESPONSE_DURATION = 0ms;	//global
+TestItem[]	TESTITEMS;  		//global
+
+
+Experiment experiment
+{
+    on_event:entry()
+    {	
+		control.button_box.open();  
+	    control.button_box.output(0x02); // If necessary set parallel port line D0 to power button box device. (sometimes nesc. for laptop).
+		show_test_windows();
+    }
+    
+    on_event:message()
+    {
+        // On Ctrl+F4 jump unconditionally to the thank-you part.
+        if (message_sender == control && message_arg == SYS_STOP)
+        {
+            control.mark_experiment_aborted();
+            thankyou.enter();
+        }
+    }
+	
+    Part welcome
+    {
+        on_event:entry()
+        {
+            entry_page.set_text(WELCOME_TEXT);
+            entry_page.action(this, 0s);
+        }
+    }
+    
+	Part first_instruction // instruction
+	{
+		on_event:entry()
+        {
+			println("==> Instructing <==");
+			pause_page.set_text(INSTRUCTION_TEXT, true);
+			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+		}
+	}
+	
+	Part
+	{
+		on_event:entry()
+		{
+			blank_page.action_auto(this, 500ms,500ms);
+		}
+	}
+
+	Part
+	{
+		on_event:entry()
+        {
+			println("==> Training <==");
+			train::train_call(this);
+        }
+	}
+
+	Part
+	{
+		on_event:entry()
+		{
+			blank_page.action_auto(this, 500ms,500ms);
+		}
+	}
+
+	Part
+	{
+		on_event:entry()
+		{
+			println("==> Instructing <==");
+			pause_page.set_text(AFTER_TRAINING_TEXT, true);
+			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+		}
+	}
+	
+
+	Part
+	{
+		on_event:entry()
+		{
+			blank_page.action_auto(this, 500ms,500ms);
+		}
+	}
+
+	Part
+	{
+		on_event:entry()
+		{
+			println("==> Pre-test <==");
+			pre_test::task_call(this,2s,first_instruction);
+		}
+	}
+	
+	Part
+	{
+		on_event:entry()
+		{
+			blank_page.action_auto(this, 500ms,500ms);
+		}
+	}
+	
+	Part
+	{
+		on_event:entry()
+		{
+			println("==> Instructing2 <==");
+			pause_page.set_text(AFTER_PRETEST_TEXT, true);
+			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+		}
+	}
+
+	Part first_practice
+	{
+		on_event:entry()
+        {
+			if(CFG_GIVE_PRACTISE)
+			{	
+				println("==> Practicing <==");
+				instruct::practice_call(this);
+			} else signal(first_practice, CONTINUE);
+        }
+	}
+	
+	Part
+	{
+		on_event:entry()
+		{
+			blank_page.action_auto(this, 500ms,500ms);
+		}
+	}
+	
+	Part first_block 	// firstBlock
+	{
+		on_event:entry()
+        {
+			BLOCK_NR = BLOCK_NR + 1;
+			
+			println("=============================================");
+			println("== Block 1                                 ==");
+			println("=============================================");
+			
+			if(shuffle_test_items(seq_block1) != OK) { println("ERROR: something off with shuffle");	terminate;}
+			
+			test::task_call(this, seq_block1, RESPONSE_DURATION_BLOCK1); // args: caller object (this), testItem[..], block_nr, specific response duration
+        }
+	}
+	
+	Part 				// Pauze
+    {
+        on_event:entry()
+        {
+			pause_page.set_text(BLOCK_PAUZE_TEXT, true);
+			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+        }
+    }
+    
+    Part second_block 	// Second Block
+	{
+		on_event:entry()
+        {
+			BLOCK_NR = BLOCK_NR + 1;
+			
+			println("=============================================");
+			println("== Block 2                                ==");
+			println("=============================================");
+			
+			if(shuffle_test_items(seq_block2) != OK) { println("ERROR: something off with shuffle");	terminate;}
+			
+			test::task_call(this, seq_block2, RESPONSE_DURATION_BLOCK2); // args: caller object (this), testItem[..], block_nr, specific response duration
+        }
+	}
+	
+	Part 				// Pauze
+    {
+        on_event:entry()
+        {
+			pause_page.set_text(BLOCK_PAUZE_TEXT, true);
+			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+        }
+    }
+    
+    Part third_block 	// Third Block
+	{
+		on_event:entry()
+        {
+			BLOCK_NR = BLOCK_NR + 1;
+			
+			println("=============================================");
+			println("== Block 3                                 ==");
+			println("=============================================");
+			
+			if(shuffle_test_items(seq_block3) != OK) { println("ERROR: something off with shuffle");	terminate;}
+			
+			test::task_call(this, seq_block3, RESPONSE_DURATION_BLOCK3); // args: caller object (this), testItem[..], block_nr, specific response duration
+        }
+	}
+
+	Part
+	{
+		on_event:entry()
+		{
+			blank_page.action_auto(this, 500ms,500ms);
+		}
+	}
+    
+    Part thankyou
+    {
+        on_event:entry()
+        {			
+			control.end_experiment();   // Check-in session.
+			
+			exit_page.set_text(THANK_YOU_TEXT);
+			exit_page.action(this, 5s);
+			control.button_box.close();  
+        }
+    }
+}

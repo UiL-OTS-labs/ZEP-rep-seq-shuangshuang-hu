@@ -216,7 +216,7 @@ Experiment experiment
     {
         on_event:entry()
         {
-			pause_page.set_text(BLOCK_PAUZE_TEXT, true);
+			pause_page.set_text(BLOCK_SWITCH_TEXT, true);
 			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
         }
     }

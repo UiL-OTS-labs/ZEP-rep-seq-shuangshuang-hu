@@ -45,7 +45,7 @@ Block pretest
 				on_event:entry()
 				{
 					TestItem item = TESTITEMS[pretest_task.cycle];
-					test_page.action(this, item, reference_time, pretest_task.cycle);
+					test_page.action(this, item, reference_time, pretest_task.cycle, "beep.wav");
 				}
 				
 				on_event:exit()

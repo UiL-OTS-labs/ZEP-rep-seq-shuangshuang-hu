@@ -23,6 +23,7 @@ Page test_page
 {
     TestItem    	item;
     string			sequence; //is emptied in loops while presenting the audio
+    string                              end_play_sound_filename;
 
     init()
     {
@@ -208,6 +209,8 @@ Page test_page
 				
 				// play the sound
 				audio.abort(); //stop any previous playing sounds
+                                            end_tone.abort();
+                                             audio.playback.device = sound_output_device;
 				audio.clip.file = stimuli_dir() + "sounds/" + token + ".wav"; // i.e. ./stimuli/sounds/A.wav
 				audio.start();
 				
@@ -217,10 +220,30 @@ Page test_page
 		}
 	}
 	
-	SoundChain audio
+            SoundChain audio
+            {
+                SoundFile clip {}
+                SoundPlayback playback {}
+            }   
+
+	SoundChain end_tone
 	{
 		SoundFile clip {}
 		SoundPlayback playback {}
+
+                        void play(string filename)
+                        {
+                            audio.abort();
+                            abort();
+                            playback.device = sound_output_device;
+                            clip.file = stimuli_dir() + "sounds/" + end_play_sound_filename;
+                            start();
+                        }
+                        
+                        on_event:finish()
+                        {
+                            done(CONTINUE);
+                        }
 	}	
 
     Response response
@@ -305,13 +328,21 @@ Page test_page
             if (num_valid_hits > 0) correctness = correct ? 1 : -1;
 
             if (!test_page_overlay.start_feedback(this, correctness, 
-                    FEEDBACK_DURATION)) 
-                done(CONTINUE);
+                    FEEDBACK_DURATION))
+                { 
+                      if(end_play_sound_filename == "")
+                    done(CONTINUE);
+                else
+                    end_tone.play(end_play_sound_filename);
+                }
         }
         
         on_event:message()
         {
-            done(CONTINUE);
+            if(end_play_sound_filename == "")
+                done(CONTINUE);
+            else
+                end_tone.play(end_play_sound_filename);
         }
     }
 
@@ -350,9 +381,6 @@ Page test_page
 
         // Enable or disable feedback.
         test_page_overlay.enable_feedback(fb);          // disabled if false
-               
-        //audio settings
-        audio.playback.device = sound_output_device;
     }
 
 
@@ -368,8 +396,12 @@ Page test_page
 
 
     // Starts a trial.
-    void action(Object caller, TestItem it, time tref, int count=-1)
+    void action(Object caller, TestItem it, time tref, int count=-1, string sound_filename = "")
     {        
+        end_play_sound_filename = sound_filename;
+        audio.abort();
+        end_tone.abort();
+
         //set test_page variables
         item = it;
         sequence = item.tokens;

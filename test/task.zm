@@ -26,19 +26,17 @@ Block task
 				test_page.setup(num_cycles, false, false, "");
 			}
 
-
 			on_event:exit()
 			{
 				test_page.cleanup();
 			}
-
 
 			Trial trial
 			{
 				on_event:entry()
 				{
 					TestItem item = TESTITEMS[test_task.cycle];
-					test_page.action(this, item, reference_time, test_task.cycle);
+					test_page.action(this, item, reference_time, test_task.cycle, "beep.wav");
 					TRIAL_NR = TRIAL_NR + 1;
 				}
 				

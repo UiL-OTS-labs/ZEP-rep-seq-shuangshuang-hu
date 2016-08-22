@@ -339,7 +339,7 @@ Page train_page
         control.target = this;
         control.button_box.disable_buttons();
         control.button_box.enable_button(0, 0); // button 0 means A
-        control.button_box.enable_button(1, 1); // button 1 means B
+        control.button_box.enable_button(2, 1); // button 1 means B
 
 		//stimulus
         instruct.start(tref);

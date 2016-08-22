@@ -46,8 +46,8 @@ Experiment experiment
 {
     on_event:entry()
     {	
-		control.button_box.open();  
-	    control.button_box.output(0x02); // If necessary set parallel port line D0 to power button box device. (sometimes nesc. for laptop).
+		control.button_box.open("/dev/ttyACM0");  
+	     // If necessary set parallel port line D0 to power button box device. (sometimes nesc. for laptop).
 		show_test_windows();
     }
     

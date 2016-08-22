@@ -185,7 +185,7 @@ Page pause_page
         layout.hlayout.repeat.is_visible = true;
         control.target = this;
         control.button_box.enable_button(0, 0);
-        control.button_box.enable_button(1, 1);
+        control.button_box.enable_button(2, 1);
     }
 
 

@@ -1,0 +1,25 @@
+
+
+enum ItemType {
+    TYPE_A,         // Soundfile with an A type stimulus
+    TYPE_B          // same with B type of stimulus
+};
+
+record TestItem {
+    ItemType    item;
+    string      fn;
+};
+
+// fill with stimuli
+TestItem[..] items_a  =
+{
+    {TYPE_A, "A.wav"},
+    {TYPE_A, "A.wav"}
+};
+
+TestItem[..] items_b =
+{
+    {TYPE_B, "B.wav"},
+    {TYPE_B, "B.wav"}
+};
+

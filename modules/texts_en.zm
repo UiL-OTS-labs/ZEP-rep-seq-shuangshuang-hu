@@ -30,23 +30,34 @@ const string    SECOND_BUTTON_TEXT              = "Second";
 
 
 // Other texts.
-const string		WELCOME_TEXT                    = "Welcome";
-const string		INSTRUCTION_TEXT				= "<b>Dear participant,</b>\n\n"
-													"Thanks for participating in the experiment!\n"
-													"In this experiment, you will learn two novel words, A and B.\n\n"
-													"Please follow the instructions.You will hear A after you press the left button (purple button),and hear B after you press the right button (orange button).\n\n"
-													"You need to remember the two words corresponding with the buttons. After making sure you remember the two words with the buttons, you will hear the words in a sequence, for example, you will hear A B in order, then please press the buttons corresponding to the two tokens. \n\n"
-													
-													"<i>In the experiment, you will hear two-word (such as AB), three-word (such as ABA) and four-word (such as ABAB) sequence. If you have any questions, please ask the experimenter.Press any button to start the experiment.</i>";
+const string		WELCOME_TEXT        = "Welcome";
+const string		INSTRUCTION_TEXT    = "<b>Dear participant,</b>\n\n"
+                                          "Thanks for participating in the experiment!\n"
+                                          "In this experiment, you will learn two novel words, A and B.\n\n"
+                                          "Please follow the instructions. You will hear A after you press "
+                                          "the left button (purple button), and hear B after you press the "
+                                          "right button (orange button).\n\n"
+                                          "You need to remember the two words corresponding with the buttons. "
+                                          "After making sure you remember the two words with the buttons, "
+                                          "you will hear the words in a sequence, for example, you will hear "
+                                          "A B in order, then please press the buttons corresponding to the two tokens. \n\n"
+                                          "<i>In the experiment, you will hear two-word (such as AB), three-word "
+                                          "(such as ABA) and four-word (such as ABAB) sequence. If you have any "
+                                          "questions, please ask the experimenter. Press any button to start the experiment.</i>";
+
 const string		PRACTICE_STIMULI_OVERLAY_TEXT	= "Remember the sequence!";
 const string		PRACTICE_RESPONSE_OVERLAY_TEXT	= "Recall the sequence!";
 const string		TO_EARLY_BUTTON_PRESS_TEXT		= "You pressed the buttons too early!";
-const string		AFTER_PRACTICE_TEXT			= "Warm up!";
+const string		AFTER_PRACTICE_TEXT			    = 
+                                          "Warm up! blahblahblahblahblahblahblah\n" // Shuangshuang adapts instructions here.
+                                          "You need to remember the two words corresponding with the buttons. "
+                                          "After making sure you remember the two words with the buttons, "
+                                          "you will hear the words in a sequence, for example, you will hear "
+                                          "A B in order, then please press the buttons corresponding to the two tokens. \n\n";
 const string		AFTER_TRAINING_TEXT				= "Have you remembered the words? If yes, let's continue!";
 const string 		AFTER_PRETEST_TEXT				= "Practice";
 const string		INSTRUCTION_PREAMBLE			= "Please follow the instructions on the screen";
-const string		PRESS_A_INSTRUCTION				
-= "Please press the left button!";
+const string		PRESS_A_INSTRUCTION	            = "Please press the left button!";
 const string		PRESS_B_INSTRUCTION				= "Please press the right button!";
 const string 		PRE_TEST_OVERLAY_TEXT			= "Practice";
 const string		BLOCK_PAUZE_TEXT				= "Continue";

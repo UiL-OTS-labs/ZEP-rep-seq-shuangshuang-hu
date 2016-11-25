@@ -1,0 +1,9 @@
+
+/*
+    File with instructions of the listening phase.
+*/
+
+const string INSTRUCTION_A = "Pre A type stimuli.";
+const string INSTRUCTION_B = "Pre B type stimuli.";
+
+

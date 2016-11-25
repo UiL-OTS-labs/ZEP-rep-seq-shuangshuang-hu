@@ -1,0 +1,106 @@
+
+import std_sound_output_device;
+
+const dur CROSS_DUR            = 500ms;
+const dur INTER_CROSS_SOUND_DUR= 250ms;
+const dur ISI_DUR              = 750ms;
+
+Page listen_page {
+    
+    HorizontalLayout layout
+    {
+        on_event:init()
+        {
+            spacing = 50;
+            height = 0;
+        }
+
+        CanvasGadget canvas
+        {
+            on_event:init()
+            {
+                size = 100,100;
+                offset_x = width/2;
+                offset_y = height/2;
+            }
+
+            CrossShape cross
+            {
+                on_event:init()
+                {
+                    x = 0.0;
+                    y = 0.0;
+                    radius = canvas.width/2;
+                    line_width = 10;
+                    line_pattern_color = rgbi:255/0/0;
+                }
+            }
+        }
+
+        time start_stimulus(time t)
+        {
+            canvas.cross.start(t, CROSS_DUR);
+            return canvas.cross.expected_finish_time;
+        }
+    }
+
+    SoundChain stimulus
+    {
+        SoundFile sound
+        {
+        }
+
+        SoundPlayback playback
+        {
+        }
+
+        on_event:finish()
+        {
+            done(CONTINUE);
+        }
+    }
+
+    void cleanup()
+    {
+        test_page_overlay.cleanup();
+
+        control.button_box.disable_buttons();
+        control.target = null;
+    }
+
+    void setup (int ntrials=-1)
+    {
+        test_page_overlay.setup(this);
+        
+        // Enable or disable the progress bar. Don't show ntrials < 0
+        test_page_overlay.show_progress_bar(ntrials);
+
+        // Enable button-box button 2 (continue).
+        control.target = this;
+        control.button_box.disable_buttons();
+
+        stimulus.playback.device = sound_output_device;
+    }
+
+    void action(Part caller, TestItem item, time t, int count)
+    {
+        string sound_fn = stimuli_dir() + "sounds/" + item.fn;
+        stimulus.sound.file = sound_fn;
+
+        test_window1.show_test_page(this, t + ISI_DUR);
+        time cross_off = layout.start_stimulus(t + ISI_DUR);
+        stimulus.start(cross_off + INTER_CROSS_SOUND_DUR);
+        
+        test_page_overlay.update_progress_bar(count);
+
+        target = caller;
+    }
+
+    void done(int msgid)
+    {
+        signal_target(msgid);
+
+        control.clear_status();
+        cleanup();
+    }
+};

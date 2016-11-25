@@ -1,0 +1,130 @@
+
+import instructions;
+import stimuli;
+import listen_page;
+
+Block task
+{
+    // just a blank page to start with.
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+    Part instructions1
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(INSTRUCTION_A);
+            pause_page.action(this);
+        }
+    }
+
+    Part blank1
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+    // block with stimuli of A type
+    Block listenting_a
+    {
+        on_event:entry()
+        {
+            num_cycles = items_a.size;
+            listen_page.setup(listenting_b.num_cycles);
+        }
+        
+        Trial
+        {
+            on_event:entry()
+            {
+                listen_page.setup(listenting_a.num_cycles);
+                TestItem item = items_a[cycle];
+                listen_page.action(this,
+                        item, reference_time, listenting_a.cycle);
+            }
+
+            on_event:exit()
+            {
+                listen_page.cleanup();
+            }
+        }
+    }
+    
+    Part between_a_and_b
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+    Part instructions2
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(INSTRUCTION_B);
+            pause_page.action(this);
+        }
+    }
+
+    Part blank2
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+    
+    Block listenting_b
+    {
+        on_event:entry()
+        {
+            num_cycles = items_b.size;
+            listen_page.setup(listenting_b.num_cycles);
+        }
+
+        on_event:exit()
+        {
+            listen_page.cleanup();
+        }
+
+        Trial
+        {
+            on_event:entry()
+            {
+                TestItem item = items_b[cycle];
+                listen_page.action(this,
+                        item, reference_time, listenting_b.cycle);
+            }
+
+            on_event:exit()
+            {
+                listen_page.cleanup();
+            }
+        }
+    }
+
+    // Show a blank page prior to going to the next stimulus.
+    Part leave_listenting
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+}
+
+void action(Part caller)
+{
+    task.enter(caller);
+}
+
+

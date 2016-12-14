@@ -3,7 +3,20 @@
     File with instructions of the listening phase.
 */
 
-const string INSTRUCTION_A = "Pre A type stimuli.";
-const string INSTRUCTION_B = "Pre B type stimuli.";
+const string INSTRUCTION_A =
+        "Dear participant,\n\n"
+        "Thanks for participating in the experiment!\n"
+        "In this experiment, you will learn two novel words, A and B.\n\n"
+        "Please follow the instructions on the screen during the experiment.\n"
+        "First, you are going to hear all the sounds that are word A.\n"
+        "Please make sure that you remember the word A.\n"
+        "If you have any questions, please ask the experimenter.\n"
+        "If not, please press any button to start the experiment.\n";
+
+const string INSTRUCTION_B =
+        "Now you are going to hear all the sounds that are word B.\n"
+        "Please make sure that you remember the word B.\n"
+        "If you have any questions, please ask the experimenter.\n"
+        "If not, please press any button to start the experiment.\n";
 
 

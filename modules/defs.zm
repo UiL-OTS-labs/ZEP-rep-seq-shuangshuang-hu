@@ -42,7 +42,7 @@ const bool      SHOW_ASSIGNED_GROUP             		= true;
 const dur       INTERTRIAL_INTERVAL             		= 1500ms;
 
 // Duration of the stimulus presentation.
-const dur 		STIMULUS_DURATION              			= 1000ms; 			//fit this roughly to the length of your audio files
+const dur 		STIMULUS_DURATION              			= 1600ms; 			//fit this roughly to the length of your audio files
 const dur 		INTERSTIMULUS_INTERVAL					= 85ms;
 
 // Duration of the feedback presentation.

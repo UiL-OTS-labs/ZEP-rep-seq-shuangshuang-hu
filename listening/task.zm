@@ -112,7 +112,7 @@ Block task
     }
 
     // Show a blank page prior to going to the next stimulus.
-    Part leave_listenting
+    Part leave_listening
     {
         on_event:entry()
         {

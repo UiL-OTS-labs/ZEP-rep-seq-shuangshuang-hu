@@ -37,15 +37,14 @@ Block task
         on_event:entry()
         {
             num_cycles = items_a.size;
-            listen_page.setup(listenting_b.num_cycles);
+            listen_page.setup(listenting_a.num_cycles);
         }
         
         Trial
         {
             on_event:entry()
             {
-                listen_page.setup(listenting_a.num_cycles);
-                TestItem item = items_a[cycle];
+                TestItem item = items_a[listenting_a.cycle];
                 listen_page.action(this,
                         item, reference_time, listenting_a.cycle);
             }
@@ -99,7 +98,7 @@ Block task
         {
             on_event:entry()
             {
-                TestItem item = items_b[cycle];
+                TestItem item = items_b[listenting_b.cycle];
                 listen_page.action(this,
                         item, reference_time, listenting_b.cycle);
             }

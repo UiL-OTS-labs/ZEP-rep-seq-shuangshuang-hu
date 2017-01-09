@@ -13,13 +13,15 @@ record TestItem {
 // fill with stimuli
 TestItem[..] items_a  =
 {
-    {TYPE_A, "A.wav"},
-    {TYPE_A, "A.wav"}
+    {TYPE_A, "A1.wav"},
+    {TYPE_A, "A2.wav"},
+    {TYPE_A, "A3.wav"}
 };
 
 TestItem[..] items_b =
 {
-    {TYPE_B, "B.wav"},
-    {TYPE_B, "B.wav"}
+    {TYPE_B, "B1.wav"},
+    {TYPE_B, "B2.wav"},
+    {TYPE_B, "B3.wav"}
 };
 

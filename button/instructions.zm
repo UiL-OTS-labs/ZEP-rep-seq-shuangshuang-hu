@@ -1,0 +1,11 @@
+
+/*
+    File with instructions of the listening phase.
+*/
+
+const string INSTRUCTION=
+       M"Dear participant,\n\n"
+        "Press button A to hear a A type sound. Press Button B to hear "
+        "a B type sound. When you know how to discriminate both of them "
+        "press the continue button";
+

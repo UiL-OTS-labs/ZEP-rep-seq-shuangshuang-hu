@@ -1,0 +1,74 @@
+
+import instructions;
+import stimuli;
+import button_page;
+
+Block task
+{
+    // just a blank page to start with.
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+    Part instructions
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(INSTRUCTION);
+            pause_page.action(this);
+        }
+    }
+
+    Part blank
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+        
+    Trial trial
+    {
+        on_event:entry()
+        {
+            button_page.action(this, reference_time);
+        }
+
+        on_event:exit()
+        {
+            button_page.cleanup();
+        }
+    }
+
+    TransientPart test_continue
+    {
+        on_event:entry()
+        {
+            if (!button_page.continue_pressed)
+                trial.enter();
+            else
+                leave_pressing.enter();
+        }
+    }
+    
+    // Show a blank page prior to going to the next stimulus / instructions.
+    Part leave_pressing
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms);
+        }
+    }
+
+}
+
+void action(Part caller)
+{
+    task.enter(caller);
+}
+
+

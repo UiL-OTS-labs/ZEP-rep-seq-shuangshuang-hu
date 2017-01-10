@@ -70,16 +70,8 @@ Experiment experiment
             entry_page.action(this, 0s);
         }
     }
-
-    Part listen_phase
-    {
-        on_event:entry()
-        {
-            listening::action(this);
-        }
-    }
-    
-	Part first_instruction // instruction
+	
+    Part first_instruction // instruction
 	{
 		on_event:entry()
         {
@@ -88,14 +80,22 @@ Experiment experiment
 			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
 		}
 	}
-	
-	Part
-	{
-		on_event:entry()
-		{
-			blank_page.action_auto(this, 500ms,500ms);
-		}
-	}
+
+    Part listen_phase
+    {
+        on_event:entry()
+        {
+            listening::action(this);
+        }
+    }
+
+    Part press_button_phase
+    {
+        on_event:entry()
+        {
+            button::action(this);
+        }
+    }
 
 	Part
 	{

@@ -17,7 +17,15 @@ HISTORY:
 
 import std_sound_output_device;
 
-const dur INTER_BUTTON_STIMULUS_TIME        = 250ms;
+// Boolean to control whether or not one want to see the picture while
+// the audio is playing.
+const bool  DISPLAY_AUDIO_PICTURE           = true;
+
+// The duration of how long a button appears in the  PRESSED colors.
+const dur   CLICK_TIME                      = 250ms;
+
+// Colors of the button during while it is pressed or not.
+// colors are int ARGB or RGB colors.
 const color UNPRESSED_LINE_PATTERN_COLOR    = rgbi:0/0/0;
 const color UNPRESSED_FILL_PATTERN_COLOR    = rgbi:64/0/0/0;
 const color PRESSED_LINE_PATTERN_COLOR      = rgbi:0/0/0;
@@ -26,7 +34,9 @@ const color PRESSED_FILL_PATTERN_COLOR      = rgbi:128/0/0/0;
 
 Page button_page
 {
-    bool continue_pressed = false;
+    bool    continue_pressed = false;
+    string  overlay_text = "";
+    bool    show_prompt;
 
     on_event:init()
     {
@@ -88,12 +98,16 @@ Page button_page
             {   
                 dur fade_in_dur;
                 int num_frames_fade_in;                                 
-
-                pre_update() //enables a fade in (makes the onset slightly more nicer).
+                
+                //enables a fade in (makes the onset slightly more nicer).
+                pre_update() 
                 {
                     if(relative_frame < num_frames_fade_in )
                     {
                         this.alpha = real(relative_frame)/real(num_frames_fade_in);
+                    }
+                    else {
+                        this.alpha = 255;
                     }
                 }
 
@@ -107,7 +121,9 @@ Page button_page
 
                     is_visible = false;
                     fade_in_dur = FADE_PERIODE_AUDIOICON;
-                    num_frames_fade_in = int(fade_in_dur/display_device.refresh_interval);  
+                    num_frames_fade_in = int(
+                            fade_in_dur/display_device.refresh_interval
+                            );
                 }
             }
 
@@ -138,7 +154,13 @@ Page button_page
                     }
                 }
 
-                Timer timer { expire() { pressed();}}
+                Timer timer
+                {
+                    on_event:expire()
+                    {
+                        pressed();
+                    }
+                }
             }
 
             TextShape button_a_text
@@ -180,7 +202,14 @@ Page button_page
                         fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                     }
                 }
-                Timer timer { expire() { pressed();}}
+
+                Timer timer
+                {
+                    on_event:expire()
+                    {
+                        pressed();
+                    }
+                }
             }
             
             TextShape button_b_text
@@ -222,12 +251,12 @@ Page button_page
             if (val == 0) // A
             {
                 canvas.buttonA.pressed();
-                canvas.buttonA.timer.start(t + INTER_BUTTON_STIMULUS_TIME);
+                canvas.buttonA.timer.start(t + CLICK_TIME);
             }
             else if (val == 1) // B
             {
                 canvas.buttonB.pressed();
-                canvas.buttonB.timer.start(t + INTER_BUTTON_STIMULUS_TIME);
+                canvas.buttonB.timer.start(t + CLICK_TIME);
             }
             else {
                 println("Error wrong button click.");
@@ -294,6 +323,12 @@ Page button_page
                     println("(Programming) Error wrong button pressed.");
                 
                 audio.play(t + 50ms, fn);
+                if (DISPLAY_AUDIO_PICTURE)
+                    layout.canvas.sound_playing.start(
+                            audio.expected_start_time,
+                            audio.duration
+                            );
+
                 control.button_box.disable_buttons();
                 
                 ignore_remaining_hits();
@@ -322,6 +357,8 @@ Page button_page
     // Performs preparatory work required before using this page.
     void setup(bool fb=false, bool pr=true, string overlay_text = "")
     {
+        button_page.overlay_text = overlay_text;
+        show_prompt = pr;
         test_page_overlay.setup(this);
         
         // Show or hide prompt.       
@@ -358,18 +395,12 @@ Page button_page
         control.button_box.enable_button(0, 0); // button 0 means A
         control.button_box.enable_button(2, 1); // button 1 means B
         
-        // stimulus
-        // dur stimulus_duration = ( (STIMULUS_DURATION + INTERSTIMULUS_INTERVAL) * length(item.tokens) );
-        // time stimoffset = tref + stimulus_duration;
-        // audio.start(tref);
-
-//        // Response interval starts at stimulus offset + STIM_RESP_INTERVAL. 
-//        layout.canvas.ok.text = STIMULUS_TEXT;
-//        response.start(stimoffset, RESPONSE_DURATION);
-//        layout.canvas.ok.start(stimoffset, RESPONSE_DURATION); //show visual queues
-
         // Update status line on control window. Cleared in done() above.
         control.set_status("pressing button phase");
+
+        test_page_overlay.update_progress_bar(0);
+        if (show_prompt)
+            test_page_overlay.show_prompt(overlay_text);
 
         // Remember who to signal when the trial is over.
         target = caller;

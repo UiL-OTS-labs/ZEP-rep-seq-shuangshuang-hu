@@ -27,15 +27,11 @@ import texts_en; // contained all the text elements.
 import shuffle;
 import output;
 
-
 import listening::task;
-
+import button::task;
 import train::training;
-
 import pre_test::task;
-
 import instruct::practice;
-
 import test::task;
 
 int BLOCK_NR; 				//global
@@ -81,6 +77,7 @@ Experiment experiment
 		}
 	}
 
+    // Just listen to type A and B stimuli.
     Part listen_phase
     {
         on_event:entry()
@@ -89,6 +86,7 @@ Experiment experiment
         }
     }
 
+    // press button A for an A type stimulus and button B for ...
     Part press_button_phase
     {
         on_event:entry()
@@ -97,32 +95,34 @@ Experiment experiment
         }
     }
 
-	Part
-	{
-		on_event:entry()
+// Training is to be removed.
+//
+//	Part
+//	{
+//		on_event:entry()
+//        {
+//			println("==> Training <==");
+//			train::train_call(this);
+//        }
+//	}
+//
+//    Part
+//    {
+//        on_event:entry()
+//        {
+//            blank_page.action_auto(this, 500ms,500ms);
+//        }
+//    }
+
+    Part
+    {
+        on_event:entry()
         {
-			println("==> Training <==");
-			train::train_call(this);
+            println("==> Instructing <==");
+            pause_page.set_text(AFTER_PRACTICE_TEXT, true);
+            pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
         }
-	}
-
-	Part
-	{
-		on_event:entry()
-		{
-			blank_page.action_auto(this, 500ms,500ms);
-		}
-	}
-
-	Part
-	{
-		on_event:entry()
-		{
-			println("==> Instructing <==");
-			pause_page.set_text(AFTER_PRACTICE_TEXT, true);
-			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
-		}
-	}
+    }
 	
 
 	Part

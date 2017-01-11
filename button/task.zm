@@ -30,6 +30,14 @@ Block task
             blank_page.action_auto(this, 500ms);
         }
     }
+
+    TransientPart setup_button_page
+    {
+        on_event:entry()
+        {
+            button_page.setup(false, true, PROMPT);
+        }
+    }
         
     Trial trial
     {
@@ -38,10 +46,6 @@ Block task
             button_page.action(this, reference_time);
         }
 
-        on_event:exit()
-        {
-            button_page.cleanup();
-        }
     }
 
     TransientPart test_continue
@@ -50,8 +54,10 @@ Block task
         {
             if (!button_page.continue_pressed)
                 trial.enter();
-            else
+            else {
+                button_page.cleanup();
                 leave_pressing.enter();
+            }
         }
     }
     
@@ -60,6 +66,7 @@ Block task
     {
         on_event:entry()
         {
+            control.button_box.enable_all_buttons(CONTINUE);
             blank_page.action_auto(this, 500ms);
         }
     }

@@ -18,6 +18,7 @@ Block task
     {
         on_event:entry()
         {
+            control.button_box.enable_all_buttons(CONTINUE);
             pause_page.set_text(INSTRUCTION_A);
             pause_page.action(this);
         }
@@ -68,6 +69,7 @@ Block task
     {
         on_event:entry()
         {
+            control.button_box.enable_all_buttons(CONTINUE);
             pause_page.set_text(INSTRUCTION_B);
             pause_page.action(this);
         }

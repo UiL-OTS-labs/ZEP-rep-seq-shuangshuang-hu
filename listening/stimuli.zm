@@ -13,15 +13,34 @@ record TestItem {
 // fill with stimuli
 TestItem[..] items_a  =
 {
-    {TYPE_A, "A1.wav"},
+    {TYPE_A, "A11.wav"},
     {TYPE_A, "A2.wav"},
+    {TYPE_A, "A6.wav"},
+    {TYPE_A, "A9.wav"},
+    {TYPE_A, "A5.wav"},
+    {TYPE_A, "A1.wav"},
+    {TYPE_A, "A12.wav"},
+    {TYPE_A, "A8.wav"},
+    {TYPE_A, "A4.wav"},
+    {TYPE_A, "A10.wav"},
+    {TYPE_A, "A7.wav"},
     {TYPE_A, "A3.wav"}
+
 };
 
 TestItem[..] items_b =
 {
     {TYPE_B, "B1.wav"},
+    {TYPE_B, "B12.wav"},
+    {TYPE_B, "B5.wav"},
+    {TYPE_B, "B8.wav"},
+    {TYPE_B, "B11.wav"},
+    {TYPE_B, "B4.wav"},
+    {TYPE_B, "B7.wav"},
     {TYPE_B, "B2.wav"},
-    {TYPE_B, "B3.wav"}
+    {TYPE_B, "B9.wav"},
+    {TYPE_B, "B6.wav"},
+    {TYPE_B, "B3.wav"},
+    {TYPE_B, "B10.wav"}
 };
 

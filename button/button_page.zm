@@ -258,6 +258,11 @@ Page button_page
                 canvas.buttonB.pressed();
                 canvas.buttonB.timer.start(t + CLICK_TIME);
             }
+            else if (val == -1) // Continue
+            {   
+                done(CONTINUE);
+                continue_pressed = true;
+            }
             else {
                 println("Error wrong button click.");
             }
@@ -319,15 +324,24 @@ Page button_page
                     rv = random(0, items_b.size);
                     fn = items_b[rv].fn;
                 }
+                else if (value == -1) // Continue pressed
+                {
+                    println("Continue button pressed.");
+                }
                 else
+                {
                     println("(Programming) Error wrong button pressed.");
+                }
                 
-                audio.play(t + 50ms, fn);
-                if (DISPLAY_AUDIO_PICTURE)
-                    layout.canvas.sound_playing.start(
-                            audio.expected_start_time,
-                            audio.duration
-                            );
+                if (value == 0 || value == 1)
+                {
+                    audio.play(t + 50ms, fn);
+                    if (DISPLAY_AUDIO_PICTURE)
+                        layout.canvas.sound_playing.start(
+                                audio.expected_start_time,
+                                audio.duration
+                                );
+                }
 
                 control.button_box.disable_buttons();
                 
@@ -393,7 +407,8 @@ Page button_page
         control.target = this;
         control.button_box.disable_buttons();
         control.button_box.enable_button(0, 0); // button 0 means A
-        control.button_box.enable_button(2, 1); // button 1 means B
+        control.button_box.enable_button(2, 1); // button 2 means B
+        control.button_box.enable_button(1, -1); // button 1 means continue
         
         // Update status line on control window. Cleared in done() above.
         control.set_status("pressing button phase");

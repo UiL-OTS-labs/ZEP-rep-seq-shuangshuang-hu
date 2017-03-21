@@ -19,60 +19,61 @@ HISTORY:
 // Item record used for the test phase item table.
 record TestItem
 {
-    string      tokens;         // target sequence of digits
+    string      tokens;         // target sequence of tokens, separated by commas
+    string      types;          // mapping of the target sequence to types
 }
 
 TestItem[..] pretest_sequences = 
 {
-	{"A"},
-	{"B"},
-	{"B"},
-	{"A"},
-	{"B"},
-	{"B"},
-        {"A"},
-	{"A"},
+	{"C", "A"},
+	{"E", "A"},
+	{"N", "B"},
+	{"U", "B"},
+	{"X", "B"},
+	{"A", "A"},
+    {"M", "B"},
+	{"H", "A"},
 };
 
 TestItem[..] practice_sequences = 
 {
-	{"AB"},
-	{"AA"},
-	{"BAB"},
+	{"AD", "AA"},
+	{"MJ", "BB"},
+	{"PES", "BAB"},
 };
 
 TestItem[..] seq_block1 = //AA, AB, BA, BB, AA, AB, BA, BB.
 {
-	{"AA"},
-	{"AB"},
-	{"BA"},
-	{"BB"},
-	{"AA"},
-	{"AB"},
-	{"BA"},
-	{"BB"},	
+	{"EF", "AA"},
+	{"EP", "AB"},
+	{"QD", "BA"},
+	{"RS", "BB"},
+	{"AB", "AA"},
+	{"CX", "AB"},
+	{"TG", "BA"},
+	{"OP", "BB"},	
 };
 
 TestItem[..] seq_block2 = //AABA, AABB, ABAA, ABBA, BAAA, BAAB, BABB, BBAB
 {
-	{"AAB"}, 
-	{"ABB"}, 
-	{"ABA"}, 
-	{"BAA"}, 
-	{"BAB"}, 
-	{"BBA"}, 
-	{"BBB"}, 
-	{"AAA"},
+	{"ABC", "AAB"}, 
+	{"DEF", "ABB"}, 
+	{"GHI", "ABA"}, 
+	{"JKL", "BAA"}, 
+	{"MNO", "BAB"}, 
+	{"PRS", "BBA"}, 
+	{"TUV", "BBB"}, 
+	{"WOP", "AAA"},
 };
 
 TestItem[..] seq_block3 = //AABABA, AABBAB, ABAAAB, ABBABA, BAABBA, BABAAB, BBABAB, BBBABA
 {
-	{"AABA"}, 
-	{"AABB"}, 
-	{"ABAA"}, 
-	{"ABBA"}, 
-	{"BAAA"}, 
-	{"BAAB"}, 
-	{"BABB"}, 
-	{"BBAB"},
+	{"ABWC", "AABA"}, 
+	{"EFOP", "AABB"}, 
+	{"GQFB", "ABAA"}, 
+	{"ARWC", "ABBA"}, 
+	{"QABC", "BAAA"}, 
+	{"QABQ", "BAAB"}, 
+	{"NGNO", "BABB"}, 
+	{"OPGO", "BBAB"},
 };

@@ -306,7 +306,7 @@ Page test_page
 						rts[rt_ind] = rt;
 				
 			//correct		
-                correct = (substring(value, 0, length(item.tokens)) == item.tokens) ? 1 : 0; // 1 is correct
+                correct = (substring(value, 0, length(item.types)) == item.types) ? 1 : 0; // 1 is correct
                 if(correct == 1)
 					rt_complete = rt;
 				
@@ -416,7 +416,8 @@ Page test_page
         control.target = this;
         control.button_box.disable_buttons();
         control.button_box.enable_button(0, 0); // button 0 means A
-        control.button_box.enable_button(2, 1); // button 1 means B
+        control.button_box.enable_button(2, 1); // button 2 means B
+        control.button_box.enable_button(1, -1); // button 1 means continue
         
 		//stimulus
         dur stimulus_duration = ( (STIMULUS_DURATION + INTERSTIMULUS_INTERVAL) * length(item.tokens) );

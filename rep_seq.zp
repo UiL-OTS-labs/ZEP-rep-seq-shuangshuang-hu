@@ -29,7 +29,6 @@ import output;
 
 import listening::task;
 import button::task;
-import train::training;
 import pre_test::task;
 import instruct::practice;
 import test::task;
@@ -151,6 +150,8 @@ Experiment experiment
 		}
 	}
 
+    // If participant failed the test jump back to the blank page between
+    // 
     TransientPart DecideReDoPreTest
     {
         on_event:entry()

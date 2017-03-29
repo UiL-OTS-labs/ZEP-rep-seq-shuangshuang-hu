@@ -45,15 +45,24 @@ const string		INSTRUCTION_TEXT    = "<b>Dear participant,</b>\n\n"
                                           "(such as ABA) and four-word (such as ABAB) sequence. If you have any "
                                           "questions, please ask the experimenter. Press any button to start the experiment.</i>";
 
+// Instructions presented when the participant fails to meet the pretest
+// criterion.
+const string        SECOND_PRETEST_INSTRUCTION = 
+        "You unfortunately need some extra practice to discriminate between\n"
+        "the A and B stimuli. So please continue to press the A and B\n"
+        "buttons until you are confident you can discriminate both stimuli.";
+
 const string		PRACTICE_STIMULI_OVERLAY_TEXT	= "Remember the sequence!";
 const string		PRACTICE_RESPONSE_OVERLAY_TEXT	= "Recall the sequence!";
 const string		TO_EARLY_BUTTON_PRESS_TEXT		= "You pressed the buttons too early!";
+
 const string		AFTER_PRACTICE_TEXT			    = 
-                                          "Warm up! blahblahblahblahblahblahblah\n" // Shuangshuang adapts instructions here.
-                                          "You need to remember the two words corresponding with the buttons. "
-                                          "After making sure you remember the two words with the buttons, "
-                                          "you will hear the words in a sequence, for example, you will hear "
-                                          "A B in order, then please press the buttons corresponding to the two tokens. \n\n";
+        "Warm up! blahblahblahblahblahblahblah\n" // Shuangshuang adapts instructions here.
+        "You need to remember the two words corresponding with the buttons. "
+        "After making sure you remember the two words with the buttons, "
+        "you will hear the words in a sequence, for example, you will hear "
+        "A B in order, then please press the buttons corresponding to the two tokens. \n\n";
+
 const string		AFTER_TRAINING_TEXT				= "Have you remembered the words? If yes, let's continue!";
 const string 		AFTER_PRETEST_TEXT				= "Practice";
 const string		INSTRUCTION_PREAMBLE			= "Please follow the instructions on the screen";

@@ -34,10 +34,11 @@ import pre_test::task;
 import instruct::practice;
 import test::task;
 
-int BLOCK_NR; 				//global
-int TRIAL_NR;
-dur RESPONSE_DURATION = 0ms;	//global
-TestItem[]	TESTITEMS;  		//global
+int         BLOCK_NR;               // Which block 
+int         TRIAL_NR;               // Which trial number
+dur         RESPONSE_DURATION = 0ms; // ???
+
+TestItem[]	TESTITEMS;              // Placeholder for the test items at hand.
 
 
 Experiment experiment
@@ -84,9 +85,36 @@ Experiment experiment
         {
             listening::action(this);
         }
+
+        on_event:exit()
+        {
+            // Skip the instruction presented to a participant when he
+            // fails the pre_test.
+            press_button_phase.enter();
+        }
     }
 
-    // press button A for an A type stimulus and button B for ...
+    // if a participant fails to meet the minimal performance on the pretest
+    // we jump back to this part.
+    Part blank_prior_to_2nd_pt_inst
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 250ms, 250ms);
+        }
+    }
+    
+    // Instructions for when the pre_test criterium wasn't met.
+    Part second_pretest_instruction
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(SECOND_PRETEST_INSTRUCTION);
+            pause_page.action(this, 250ms);
+        }
+    }
+
+    // Press button A for an A type stimulus and button B for ...
     Part press_button_phase
     {
         on_event:entry()
@@ -94,25 +122,6 @@ Experiment experiment
             button::action(this);
         }
     }
-
-// Training is to be removed.
-//
-//	Part
-//	{
-//		on_event:entry()
-//        {
-//			println("==> Training <==");
-//			train::train_call(this);
-//        }
-//	}
-//
-//    Part
-//    {
-//        on_event:entry()
-//        {
-//            blank_page.action_auto(this, 500ms,500ms);
-//        }
-//    }
 
     Part
     {
@@ -138,9 +147,23 @@ Experiment experiment
 		on_event:entry()
 		{
 			println("==> Pre-test <==");
-			pre_test::task_call(this,2s,first_instruction);
+			pre_test::task_call(this,2s);
 		}
 	}
+
+    TransientPart DecideReDoPreTest
+    {
+        on_event:entry()
+        {
+            if (!pre_test::pretest.test_passed() ) {
+                // run the pretest and button phase again.
+                blank_prior_to_2nd_pt_inst.enter();
+            }
+            else {
+                // save pretest TODO
+            }
+        }
+    }
 	
 	Part
 	{

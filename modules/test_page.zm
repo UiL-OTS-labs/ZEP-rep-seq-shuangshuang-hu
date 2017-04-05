@@ -18,12 +18,14 @@ test_output_append
 \******************************************************************************/
 
 import std_sound_output_device;
+import splitstring;
 
 Page test_page
 {
     TestItem    	item;
-    string			sequence; //is emptied in loops while presenting the audio
-    string                              end_play_sound_filename;
+    string          end_play_sound_filename;
+    string[..]      tokens; // Contains the base name of the stimuli to present.
+    int             tok_idx;// The index of the current token
 
     init()
     {
@@ -122,13 +124,10 @@ Page test_page
                 {
                     x = -150; y = 200;
                     radius = 30;
-     
                     line_width = 3;
-     
+
                     line_pattern_color =unpressed_line_pattern_color;
-     
                     fill_pattern_color = unpressed_fill_pattern_color;
-     
                     is_visible = true;
                 }
                 
@@ -160,13 +159,10 @@ Page test_page
                 {
                     x = 150; y = 200;
                     radius = 30;
-     
                     line_width = 3;
-     
+
                     line_pattern_color = unpressed_line_pattern_color;
-     
                     fill_pattern_color = unpressed_fill_pattern_color;
-     
                     is_visible = true;
                 }
                 
@@ -198,69 +194,68 @@ Page test_page
     
 	Timer stimulus
 	{
-		string token;
-		
-		on_event:expire()
-		{
-			if(sequence != "") //if the sequence hasn't ran out...
-			{				
-				token = substring(sequence,0,1); //pick the left most token in the sequence and...
-				sequence = substring(sequence,1,length(sequence)-1); // shorten sequence
-				
-				// play the sound
-				audio.abort(); //stop any previous playing sounds
-                                            end_tone.abort();
-                                             audio.playback.device = sound_output_device;
-				audio.clip.file = stimuli_dir() + "sounds/" + token + ".wav"; // i.e. ./stimuli/sounds/A.wav
-				audio.start();
-				
-				// restart timer with the correct stimulus duration
-				this.start(this.expire_time + STIMULUS_DURATION + INTERSTIMULUS_INTERVAL);
-			} 
-		}
+        string token;
+
+        on_event:expire()
+        {
+            if(tok_idx < tokens.size) //if the sequence hasn't ran out...
+            {				
+                token = tokens[tok_idx++];
+
+                // play the sound
+                audio.abort(); //stop any previous playing sounds
+                end_tone.abort();
+                audio.playback.device = sound_output_device;
+                audio.clip.file = stimuli_dir() + "sounds/" + token + ".wav"; // i.e. ./stimuli/sounds/A.wav
+                audio.start();
+
+                // restart timer with the correct stimulus duration
+                this.start(this.expire_time + STIMULUS_DURATION + INTERSTIMULUS_INTERVAL);
+            } 
+        }
 	}
 	
-            SoundChain audio
-            {
-                SoundFile clip {}
-                SoundPlayback playback {}
-            }   
+    SoundChain audio
+    {
+        SoundFile clip {}
+        SoundPlayback playback {}
+    }   
 
 	SoundChain end_tone
 	{
-		SoundFile clip {}
-		SoundPlayback playback {}
+        SoundFile clip {}
+        SoundPlayback playback {}
 
-                        void play(string filename)
-                        {
-                            audio.abort();
-                            abort();
-                            playback.device = sound_output_device;
-                            clip.file = stimuli_dir() + "sounds/" + end_play_sound_filename;
-                            start();
-                        }
-                        
-                        on_event:finish()
-                        {
-                            done(CONTINUE);
-                        }
+        void play(string filename)
+        {
+            audio.abort();
+            abort();
+            playback.device = sound_output_device;
+            clip.file = stimuli_dir() + "sounds/" + end_play_sound_filename;
+            start();
+        }
+
+        on_event:finish()
+        {
+            done(CONTINUE);
+        }
 	}	
 
     Response response
     {
         // Response data.
-        string  	value;          			// value: entered tokens
-        int			rt_complete;             	// response time [ms]
-        int[..]		rts;						// reaction time holder
-        int			rt_ind;						// counter for reaction times
-        int    		correct;        			// correct response: 0=no, 1=yes, -1=n.a.
-		
+        string  value;          // value: entered tokens
+        int     rt_complete;    // response time [ms]
+        int[..] rts;			// reaction time holder
+        int     rt_ind;			// counter for reaction times
+        int     correct;        // correct response: 0=no, 1=yes, -1=n.a.
 		
         void clear()
         {
             value = "";
             rt_complete = -9999;
-            rts.size = 0; rts.size = MAX_NUMBER_OF_RESPONSES + 1; // resets the rts.
+            rts.size = 0;
+            rts.size = MAX_NUMBER_OF_RESPONSES + 1; // resets the rts.
             rt_ind = 0;
             correct = -1;
         }
@@ -273,7 +268,9 @@ Page test_page
                 if(!layout.canvas.buttonA.timer.is_running)
                 {
                     layout.canvas.buttonA.pressed();
-                    layout.canvas.buttonA.timer.start(t+PRAC_BUTTON_SHOW_PRESSED_DUR);
+                    layout.canvas.buttonA.timer.start(
+                            t + PRAC_BUTTON_SHOW_PRESSED_DUR
+                            );
                 }
             }
 			else if(val == 1) // B
@@ -282,38 +279,41 @@ Page test_page
                 if(!layout.canvas.buttonB.timer.is_running)
                 {
                     layout.canvas.buttonB.pressed();
-                    layout.canvas.buttonB.timer.start(t+PRAC_BUTTON_SHOW_PRESSED_DUR);
+                    layout.canvas.buttonB.timer.start(
+                            t + PRAC_BUTTON_SHOW_PRESSED_DUR
+                            );
                 }
             }
 		}
 		
         void process_hit(string val, time t)
         {
-				HitType validity = hit(t);
- 
-            // Accept the the hits and save the reaction times
+            HitType validity = hit(t);
+
+            // Accept the hits and save the reaction times
             if (validity == HIT_VALID)
             {
-			//value
                 value = value + val;
-			
-			//rt
+
                 int rt = int(reaction_time(rt_ind));
                 rt_ind++;
                 if(rt_ind > MAX_NUMBER_OF_RESPONSES)
-					println("ERROR: max number of responses is reached! Further RT not recorded! Max#: " + MAX_NUMBER_OF_RESPONSES);
-				else
-						rts[rt_ind] = rt;
-				
-			//correct		
-                correct = (substring(value, 0, length(item.types)) == item.types) ? 1 : 0; // 1 is correct
+                    println("ERROR: max number of responses is reached! "
+                            "Further RT not recorded! Max#: " +
+                            MAX_NUMBER_OF_RESPONSES);
+                else
+                    rts[rt_ind] = rt;
+
+                correct = (substring(value, 0, length(item.types)) == item.types) ? 1 : 0;
                 if(correct == 1)
-					rt_complete = rt;
-				
-				if(length(value) >= length(item.tokens)) // if the response is at or beyond the token length. Display correctness.
-				{
-					layout.canvas.ok.text = INTER_TRAIL_TEXT;
-				}
+                    rt_complete = rt;
+                
+                // If the response is at or beyond the token length.
+                // Display correctness.
+                if(length(value) >= length(item.tokens)) 
+                {
+                    layout.canvas.ok.text = INTER_TRAIL_TEXT;
+                }
             }
             else if (validity == HIT_TOO_EARLY)
             {
@@ -368,13 +368,16 @@ Page test_page
     //==========================================================================
 
     // Performs preparatory work required before using this page.
-    void setup(int ntrials=-1, bool fb=false, bool pr=false, string overlay_text = "")
+    void setup(int ntrials=-1,
+               bool fb=false,
+               bool pr=false,
+               string overlay_text = ""
+               )
     {
         test_page_overlay.setup(this);
         
         // Show or hide prompt.       
-        test_page_overlay.show_prompt(pr ? 
-             overlay_text : "");
+        test_page_overlay.show_prompt(pr ? overlay_text : "");
              
         // Enable or disable the progress bar.
         test_page_overlay.show_progress_bar(ntrials);   // disabled if < 0
@@ -396,15 +399,21 @@ Page test_page
 
 
     // Starts a trial.
-    void action(Object caller, TestItem it, time tref, int count=-1, string sound_filename = "")
-    {        
+    void action(Object caller,
+                TestItem it,
+                time tref,
+                int count=-1,
+                string sound_filename = ""
+                )
+    {
         end_play_sound_filename = sound_filename;
         audio.abort();
         end_tone.abort();
 
         //set test_page variables
         item = it;
-        sequence = item.tokens;
+        split_string(tokens, item.tokens, ",", true);
+        tok_idx = 0;
         
         // Show this page (if not yet done) and make tref the trial start time.
         tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
@@ -420,15 +429,24 @@ Page test_page
         control.button_box.enable_button(1, -1); // button 1 means continue
         
 		//stimulus
-        dur stimulus_duration = ( (STIMULUS_DURATION + INTERSTIMULUS_INTERVAL) * length(item.tokens) );
+        dur stimulus_duration;
+        stimulus_duration = (STIMULUS_DURATION + INTERSTIMULUS_INTERVAL) *
+                             length(item.tokens);
+
         time stimoffset = tref + stimulus_duration;
         stimulus.start(tref);
-        layout.canvas.sound_playing.start(tref-FADE_PERIODE_AUDIOICON, stimulus_duration); //show visual queues but because of fade_period it starts slightly sooner
+        
+        //show visual queues but because of fade_period it starts slightly sooner
+        layout.canvas.sound_playing.start(
+                tref-FADE_PERIODE_AUDIOICON,
+                stimulus_duration
+                );
 		
         // Response interval starts at stimulus offset + STIM_RESP_INTERVAL. 
         layout.canvas.ok.text = STIMULUS_TEXT;
         response.start(stimoffset, RESPONSE_DURATION);
-        layout.canvas.ok.start(stimoffset, RESPONSE_DURATION); //show visual queues
+        //show visual queues
+        layout.canvas.ok.start(stimoffset, RESPONSE_DURATION);
 
 
         // Update progress counter (if enabled).

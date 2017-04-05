@@ -1,0 +1,74 @@
+/*****************************************************************************\
+This is a short Zep module that allows to split a string base on a string of
+separating tokens. AFAIK Zep doesn't have a build-in to get this job done.
+
+Author: Maarten Duijndam
+License: This code is licensed under the General Public Licence version 2.
+         The use of this code is on your own responsibility.
+\*****************************************************************************/
+
+
+/**
+ * private function to append a new string to an existing string array.
+ */
+void p_append_string_array(string[] array, string val)
+{
+    array.size = array.size + 1;
+    array[array.size - 1] = val;
+}
+
+/**
+ * Splits a string into tokens. The separator is removed from the tokens
+ * and the output string will contain the number of separators + 1 tokens.
+ * Based on pythons string.split method.
+ *
+ * Note I think the function can be rewritten to contain only one loop
+ * but it works.
+ *
+ * @param output The string array to which the output will be written
+ *               if the output isn't empty it will be cleared.
+ * @param s      The string to be split in tokens.
+ * @param sep    The string that separates the tokens in s.
+ * @param trim   If true all white space surrounding not white space characters
+ *               will be trimmed from the tokens.
+ */
+void split_string(string[] output, string s, string sep, bool trim=false)
+{
+    int i       = 0;
+    int lastpos = 0;
+    int[..] tokstarts;
+
+    // Clear output before start
+    output.size = 0;
+
+    // Count the number of separating strings are present.
+    tokstarts.size = count_keys(s, sep);
+
+    while (i < tokstarts.size) {
+        int keypos = find_key(s, sep, lastpos);
+        tokstarts[i] = keypos;
+        lastpos = keypos + length(sep);
+        i++;
+    }
+
+    i = 0;
+    lastpos = 0;
+    while(i < tokstarts.size) {
+        string sub = substring(s, lastpos, tokstarts[i] - lastpos);
+        p_append_string_array(output, sub);
+        lastpos = tokstarts[i] + length(sep);
+
+        i++;
+    }
+    
+    // The output should contain the number of separators + 1 tokens.
+    p_append_string_array(output, substring(s, lastpos, length(s)));
+
+    // trim if necessary 
+    i = 0;
+    while (trim && i < output.size) {
+        trim_whitespace(output[i]);
+        i++;
+    }
+}
+

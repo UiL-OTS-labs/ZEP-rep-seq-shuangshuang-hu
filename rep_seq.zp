@@ -6,7 +6,8 @@ ADAPTED BY:     -
 EXPERIMENT:	Repeat sequence experiment
 
 DESCRIPTION: Participant is presented with an audio sequence of 'A' or 'B' and
-* has to press the corresponding buttons in the right order following the presentation.
+* has to press the corresponding buttons in the right order following the
+presentation.
 
 HISTORY:
 2014-06-10 CvR   Created.
@@ -85,10 +86,14 @@ Experiment experiment
             listening::action(this);
         }
 
-        on_event:exit()
+    }
+    
+    // Skip the instruction presented to a participant when he/she
+    // fails the pre_test.
+    TransientPart jump_to_press_the_buttton
+    {
+        on_event:entry()
         {
-            // Skip the instruction presented to a participant when he
-            // fails the pre_test.
             press_button_phase.enter();
         }
     }
@@ -126,7 +131,6 @@ Experiment experiment
     {
         on_event:entry()
         {
-            println("==> Instructing <==");
             pause_page.set_text(AFTER_PRACTICE_TEXT, true);
             pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
         }
@@ -145,7 +149,6 @@ Experiment experiment
 	{
 		on_event:entry()
 		{
-			println("==> Pre-test <==");
 			pre_test::task_call(this,2s);
 		}
 	}
@@ -178,7 +181,6 @@ Experiment experiment
 	{
 		on_event:entry()
 		{
-			println("==> Instructing2 <==");
 			pause_page.set_text(AFTER_PRETEST_TEXT, true);
 			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
 		}
@@ -190,7 +192,6 @@ Experiment experiment
         {
 			if(CFG_GIVE_PRACTISE)
 			{	
-				println("==> Practicing <==");
 				instruct::practice_call(this);
 			} else signal(first_practice, CONTINUE);
         }

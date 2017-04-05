@@ -19,27 +19,27 @@ HISTORY:
 // Item record used for the test phase item table.
 record TestItem
 {
-    string      tokens;         // target sequence of tokens, separated by commas
-    string      types;          // mapping of the target sequence to types
+    string tokens;         // target sequence of tokens, separated by commas
+    string types;          // mapping of the target sequence to types
 }
 
 TestItem[..] pretest_sequences = 
 {
-	{"C", "A"},
-	{"E", "A"},
-	{"N", "B"},
-	{"U", "B"},
-	{"X", "B"},
-	{"A", "A"},
-    {"M", "B"},
-	{"H", "A"},
+	{"A1", "A"},
+	{"A2", "A"},
+	{"B1", "B"},
+	{"B2", "B"},
+	{"B3", "B"},
+	{"A3", "A"},
+    {"B4", "B"},
+	{"A4", "A"},
 };
 
 TestItem[..] practice_sequences = 
 {
-	{"AD", "AA"},
-	{"MJ", "BB"},
-	{"PES", "BAB"},
+	{"A1,A4"    , "AA"},
+	{"B1,B2"    , "BB"},
+	{"B3,A5,B4" , "BAB"},
 };
 
 TestItem[..] seq_block1 = //AA, AB, BA, BB, AA, AB, BA, BB.

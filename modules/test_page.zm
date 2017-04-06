@@ -24,8 +24,22 @@ Page test_page
 {
     TestItem    	item;
     string          end_play_sound_filename;
-    string[..]      tokens; // Contains the base name of the stimuli to present.
-    int             tok_idx;// The index of the current token
+    string[..]      tokens;     // Contains the base name of the stimuli to present.
+    int             tok_idx;    // The index of the current token
+    bool            more_tokens;// indicates whether we should present more tokens.
+    
+    string get_next_token()
+    {
+        string ret = tokens[tok_idx++];
+        if (tok_idx == tokens.size)
+            more_tokens = false;
+        return ret;
+    }
+
+    bool tokens_empty()
+    {
+        return tok_idx >= tokens.size;
+    }
 
     init()
     {
@@ -188,37 +202,64 @@ Page test_page
 			// kill all timers or players
             full_abort();
 			audio.abort();
-			stimulus.abort();
+			//stimulus.abort();
         }
     }
     
-	Timer stimulus
-	{
-        string token;
-
-        on_event:expire()
-        {
-            if(tok_idx < tokens.size) //if the sequence hasn't ran out...
-            {				
-                token = tokens[tok_idx++];
-
-                // play the sound
-                audio.abort(); //stop any previous playing sounds
-                end_tone.abort();
-                audio.playback.device = sound_output_device;
-                audio.clip.file = stimuli_dir() + "sounds/" + token + ".wav"; // i.e. ./stimuli/sounds/A.wav
-                audio.start();
-
-                // restart timer with the correct stimulus duration
-                this.start(this.expire_time + STIMULUS_DURATION + INTERSTIMULUS_INTERVAL);
-            } 
-        }
-	}
+//	Timer stimulus
+//	{
+//        string token;
+//
+//        on_event:expire()
+//        {
+//            if(tok_idx < tokens.size) //if the sequence hasn't ran out...
+//            {				
+//                token = tokens[tok_idx++];
+//
+//                // play the sound
+//                audio.abort(); //stop any previous playing sounds
+//                end_tone.abort();
+//                audio.playback.device = sound_output_device;
+//                audio.clip.file = stimuli_dir() + "sounds/" + token + ".wav"; // i.e. ./stimuli/sounds/A.wav
+//                audio.start();
+//
+//                // restart timer with the correct stimulus duration
+//                this.start(this.expire_time + STIMULUS_DURATION + INTERSTIMULUS_INTERVAL);
+//            } 
+//        }
+//	}
 	
     SoundChain audio
     {
         SoundFile clip {}
         SoundPlayback playback {}
+
+        void play(time starttime, string token)
+        {
+            abort();
+            audio.playback.device = sound_output_device;
+            string fn = get_filename(token);
+            clip.file = fn;
+            start(starttime);
+            // start response when there are no more tokens to present
+            if (tokens_empty()) {
+                response.start(expected_finish_time, RESPONSE_DURATION);
+                layout.canvas.ok.start(expected_finish_time,
+                                       RESPONSE_DURATION);
+            }
+        }
+
+        string get_filename(string token)
+        {
+            return stimuli_dir() + "sounds/" + token + ".wav";
+        }
+
+        on_event:finish()
+        {
+            if (!tokens_empty()) {
+                play(finish_time + INTERSTIMULUS_INTERVAL, get_next_token());
+            }
+        }
     }   
 
 	SoundChain end_tone
@@ -414,6 +455,7 @@ Page test_page
         item = it;
         split_string(tokens, item.tokens, ",", true);
         tok_idx = 0;
+        more_tokens = true;
         
         // Show this page (if not yet done) and make tref the trial start time.
         tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
@@ -424,19 +466,15 @@ Page test_page
 		 // Enable button-box buttons 0 and 1 for resp. A and B (or C and D)
         control.target = this;
         control.button_box.disable_buttons();
-        control.button_box.enable_button(0, 0); // button 0 means A
-        control.button_box.enable_button(2, 1); // button 2 means B
+        control.button_box.enable_button(0,  0); // button 0 means A
+        control.button_box.enable_button(2,  1); // button 2 means B
         control.button_box.enable_button(1, -1); // button 1 means continue
-        
-		//stimulus
-        dur stimulus_duration;
-        stimulus_duration = (STIMULUS_DURATION + INTERSTIMULUS_INTERVAL) *
-                             length(item.tokens);
 
-        time stimoffset = tref + stimulus_duration;
-        stimulus.start(tref);
+        dur stimulus_duration = tokens.size      * STIMULUS_DURATION       +
+                               (tokens.size - 1) * INTERSTIMULUS_INTERVAL;
         
-        //show visual queues but because of fade_period it starts slightly sooner
+        // Show visual queues but because of fade_period
+        // it starts slightly sooner.
         layout.canvas.sound_playing.start(
                 tref-FADE_PERIODE_AUDIOICON,
                 stimulus_duration
@@ -444,18 +482,14 @@ Page test_page
 		
         // Response interval starts at stimulus offset + STIM_RESP_INTERVAL. 
         layout.canvas.ok.text = STIMULUS_TEXT;
-        response.start(stimoffset, RESPONSE_DURATION);
-        //show visual queues
-        layout.canvas.ok.start(stimoffset, RESPONSE_DURATION);
 
+        audio.play(tref, get_next_token());
 
         // Update progress counter (if enabled).
         test_page_overlay.update_progress_bar(count);
 
-
         // Update status line on control window. Cleared in done() above.
         control.set_status(item.tokens);
-
 
         // Remember who to signal when the trial is over.
         target = caller;

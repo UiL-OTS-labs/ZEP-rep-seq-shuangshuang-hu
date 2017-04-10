@@ -154,7 +154,7 @@ Experiment experiment
 	{
 		on_event:entry()
 		{
-			pre_test::task_call(this,2s);
+			pre_test::task_call(this,2s, nth_practice);
 		}
 	}
 

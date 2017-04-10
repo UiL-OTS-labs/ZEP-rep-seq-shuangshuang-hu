@@ -5,6 +5,20 @@ import button_page;
 
 Block task
 {
+    int nth_practice; // Keep track of the nth time we run this task.
+    int nth_button;
+    int nth_a_pressed;
+    int nth_b_pressed;
+
+    void update_counts(int value)
+    {
+        nth_button++;
+        if (value == 0)
+            nth_a_pressed++;
+        if (value == 1)
+            nth_b_pressed++;
+    }
+
     // just a blank page to start with.
     Part
     {
@@ -47,6 +61,23 @@ Block task
             button_page.action(this, reference_time);
         }
 
+        on_event:exit()
+        {
+
+            ButtonOutput output;
+            output.repetition = nth_practice;
+            output.nth_button = ++nth_button;
+            if (button_page.answer == 0) {
+                output.a_pressed = ++nth_a_pressed;
+                output.svalue = "A";
+            }
+            if (button_page.answer == 1) {
+                output.b_pressed = ++nth_b_pressed;
+                output.svalue = "B";
+            }
+            output.value = button_page.answer;
+            button_output_append(output);
+        }
     }
 
     TransientPart test_continue
@@ -74,8 +105,9 @@ Block task
 
 }
 
-void action(Part caller)
+void action(Part caller, int nth_practice)
 {
+    task.nth_practice = nth_practice;
     task.enter(caller);
 }
 

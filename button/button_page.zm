@@ -37,6 +37,7 @@ Page button_page
     bool    continue_pressed = false;
     string  overlay_text = "";
     bool    show_prompt;
+    int     answer = -1;
 
     on_event:init()
     {
@@ -298,6 +299,7 @@ Page button_page
     Response response
     {
         // Response data.
+        int value;
 
         void process_hit(int val, time t)
         {
@@ -313,6 +315,7 @@ Page button_page
                 string fn = "";
 
                 layout.button_click(val, t);
+                answer = val;
 
                 if (value == 0)// A pressed
                 {
@@ -393,6 +396,8 @@ Page button_page
         
         control.button_box.disable_buttons();
         control.target = null;
+        
+        // don't cleanup answer 
     }
 
     // Starts a trial.
@@ -400,6 +405,8 @@ Page button_page
     {        
         // Show this page (if not yet done) and make tref the trial start time.
         tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
+
+        answer = -1;
 
         response.start(now());
                 

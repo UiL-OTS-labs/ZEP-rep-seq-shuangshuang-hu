@@ -43,6 +43,8 @@ TestItem[]	TESTITEMS;              // Placeholder for the test items at hand.
 
 Experiment experiment
 {
+    int nth_practice = 0;
+
     on_event:entry()
     {	
 		control.button_box.open("/dev/ttyACM0");  
@@ -108,13 +110,13 @@ Experiment experiment
         }
     }
     
-    // Instructions for when the pre_test criterium wasn't met.
+    // Instructions for when the pre_test criterion wasn't met.
     Part second_pretest_instruction
     {
         on_event:entry()
         {
             pause_page.set_text(SECOND_PRETEST_INSTRUCTION);
-            pause_page.action(this, 250ms);
+            pause_page.action(this);
         }
     }
 
@@ -123,7 +125,10 @@ Experiment experiment
     {
         on_event:entry()
         {
-            button::action(this);
+            // Each time the task arrives here another practice run
+            // is conducted.
+            nth_practice++;
+            button::action(this, nth_practice);
         }
     }
 
@@ -165,6 +170,8 @@ Experiment experiment
             }
             else {
                 // save pretest TODO
+                button_phase_save();
+                pretest_save();
             }
         }
     }
@@ -215,13 +222,21 @@ Experiment experiment
 			println("== Block 1                                 ==");
 			println("=============================================");
 			
-			if(shuffle_test_items(seq_block1) != OK) { println("ERROR: something off with shuffle");	terminate;}
-			
-			test::task_call(this, seq_block1, RESPONSE_DURATION_BLOCK1); // args: caller object (this), testItem[..], block_nr, specific response duration
+			if(shuffle_test_items(seq_block1) != OK)
+            {
+                println("ERROR: something off with shuffle");
+                terminate;
+            }
+
+			// args: caller object (this),
+            //       testItem[..],
+            //       block_nr,
+            //       specific response duration
+			test::task_call(this, seq_block1, RESPONSE_DURATION_BLOCK1); 
         }
 	}
 	
-	Part 				// Pauze
+	Part // Pauze
     {
         on_event:entry()
         {

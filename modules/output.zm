@@ -18,28 +18,44 @@ HISTORY:
 // the final digit span score.
 record TestOutput
 {
-	int			trial;
-	int 		block;
+	int         trial;
+	int         block;
 	
-    string 	sequence;
-	string 	response;
-	int			correct;
-	int			rt_complete; // reaction time at which the set was completed
+    string 	    sequence;
+	string 	    response;
+	int         correct;
+	int         rt_complete; // reaction time at which the set was completed
 	
-    int			rt1;
-    int			rt2;
-    int			rt3;
-    int			rt4;
-    int			rt5;
-    int			rt6;
-    int			rt7;
-    int			rt8;
-    int			rt9;
-    int			rt10;
+    int         rt1;
+    int         rt2;
+    int         rt3;
+    int         rt4;
+    int         rt5;
+    int         rt6;
+    int         rt7;
+    int         rt8;
+    int         rt9;
+    int         rt10;
+}
+
+/**
+ * Output of the press the button phase.
+ */
+record ButtonOutput {
+    int     repetition;     // how often is the Button press phase repeated
+    int     nth_button;     // how often is A and/or B pressed
+    int     a_pressed;
+    int     b_pressed;
+    int     value;          // 0 or 1
+    string  svalue;         // A or B
 }
 
 // Test phase output table 1.
 TestOutput[..] test_output;
+
+TestOutput[..] practice_output;
+
+ButtonOutput[..] button_phase_output;
 
 //------------------------------------------------------------------------------
 
@@ -51,13 +67,37 @@ void test_output_append(TestOutput data)
     test_output[test_output.size-1] = data;
 }
 
+// Append to button_phase_output.
+void button_output_append(ButtonOutput data)
+{
+    button_phase_output.size = button_phase_output.size + 1;
+    button_phase_output[button_phase_output.size-1] = data;
+}
+
 
 // Writes test phase output table 1 contents to CSV file and clears the table.
 void test_output_save()
 {
     // Append table to CSV file (create if non-existent). The filename 
     // format is: <dbname>/<dbnum>/<expname>/ses<sesid>-<tblnum>.csv
-    test_output.append(expdb.experiment.session.table_filename(1), 
-        "Test phase results");
-    test_output.size = 0;
+    //test_output.append(expdb.experiment.session.table_filename(1), 
+    //    "Test phase results");
+    //test_output.size = 0;
+    string fn = expdb.experiment.session.create_table(namespace_name, 1);
+    test_output.append(fn, "Test phase results");
+}
+
+// Saves the button output.
+void button_phase_save()
+{
+    string fn = expdb.experiment.session.create_table(namespace_name, 2);
+    button_phase_output.append(fn, "Output button phase");
+    button_phase_output.size = 0;
+}
+
+void pretest_save()
+{
+    string fn = expdb.experiment.session.create_table(namespace_name, 3);
+    practice_output.append(fn, "Output pre-test");
+    button_phase_output.size = 0;
 }

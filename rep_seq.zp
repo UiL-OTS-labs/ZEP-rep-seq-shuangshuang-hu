@@ -200,7 +200,11 @@ Experiment experiment
 			if(CFG_GIVE_PRACTISE)
 			{	
 				instruct::practice_call(this);
-			} else signal(first_practice, CONTINUE);
+			}
+            else
+            {
+                signal(first_practice, CONTINUE);
+            }
         }
 	}
 	

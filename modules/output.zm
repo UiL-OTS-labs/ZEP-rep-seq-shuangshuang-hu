@@ -55,6 +55,8 @@ TestOutput[..] test_output;
 
 TestOutput[..] pretest_output;
 
+TestOutput[..] practice_output;
+
 ButtonOutput[..] button_phase_output;
 
 //------------------------------------------------------------------------------
@@ -74,11 +76,18 @@ void button_output_append(ButtonOutput data)
     button_phase_output[button_phase_output.size-1] = data;
 }
 
-// Append to the practice output
+// Append to the pretest output
 void pretest_output_append(TestOutput output)
 {
     pretest_output.size = pretest_output.size + 1;
     pretest_output[pretest_output.size - 1] = output;
+}
+
+// Append to the pretest output
+void practice_output_append(TestOutput output)
+{
+    practice_output.size = practice_output.size + 1;
+    practice_output[practice_output.size - 1] = output;
 }
 
 // Writes test phase output table 1 contents to CSV file and clears the table.
@@ -107,4 +116,12 @@ void pretest_save()
     string fn = expdb.experiment.session.create_table(namespace_name, 3);
     pretest_output.append(fn, "Output pre-test");
     pretest_output.size = 0;
+}
+
+// Save the practice
+void practice_save()
+{
+    string fn = expdb.experiment.session.create_table(namespace_name, 3);
+    practice_output.append(fn, "Output practice");
+    practice_output.size = 0;
 }

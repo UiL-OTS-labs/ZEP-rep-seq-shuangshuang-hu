@@ -218,25 +218,25 @@ Experiment experiment
 	
 	Part first_block 	// firstBlock
 	{
-		on_event:entry()
+        on_event:entry()
         {
-			BLOCK_NR = BLOCK_NR + 1;
-			
-			println("=============================================");
-			println("== Block 1                                 ==");
-			println("=============================================");
-			
-			if(shuffle_test_items(seq_block1) != OK)
+            BLOCK_NR = BLOCK_NR + 1;
+
+            println("=============================================");
+            println("== Block 1                                 ==");
+            println("=============================================");
+
+            if(shuffle_test_items(seq_block1) != OK)
             {
                 println("ERROR: something off with shuffle");
                 terminate;
             }
 
-			// args: caller object (this),
+            // args: caller object (this),
             //       testItem[..],
             //       block_nr,
             //       specific response duration
-			test::task_call(this, seq_block1, RESPONSE_DURATION_BLOCK1); 
+            test::task_call(this, seq_block1, RESPONSE_DURATION_BLOCK1); 
         }
 	}
 	
@@ -259,36 +259,44 @@ Experiment experiment
 			println("== Block 2                                ==");
 			println("=============================================");
 			
-			if(shuffle_test_items(seq_block2) != OK) { println("ERROR: something off with shuffle");	terminate;}
+            if(shuffle_test_items(seq_block2) != OK)
+            {
+                println("ERROR: something off with shuffle");
+                terminate;
+            }
 			
-			test::task_call(this, seq_block2, RESPONSE_DURATION_BLOCK2); // args: caller object (this), testItem[..], block_nr, specific response duration
+            test::task_call(this, seq_block2, RESPONSE_DURATION_BLOCK2);
         }
-	}
+    }
 	
-	Part 				// Pauze
+    Part 				// Pauze
     {
         on_event:entry()
         {
-			pause_page.set_text(BLOCK_SWITCH_TEXT, true);
-			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+            pause_page.set_text(BLOCK_SWITCH_TEXT, true);
+            pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
         }
     }
     
     Part third_block 	// Third Block
-	{
-		on_event:entry()
+    {
+        on_event:entry()
         {
-			BLOCK_NR = BLOCK_NR + 1;
-			
-			println("=============================================");
-			println("== Block 3                                 ==");
-			println("=============================================");
-			
-			if(shuffle_test_items(seq_block3) != OK) { println("ERROR: something off with shuffle");	terminate;}
-			
-			test::task_call(this, seq_block3, RESPONSE_DURATION_BLOCK3); // args: caller object (this), testItem[..], block_nr, specific response duration
+            BLOCK_NR = BLOCK_NR + 1;
+
+            println("=============================================");
+            println("== Block 3                                 ==");
+            println("=============================================");
+
+            if(shuffle_test_items(seq_block3) != OK)
+            {
+                println("ERROR: something off with shuffle");
+                terminate;
+            }
+
+            test::task_call(this, seq_block3, RESPONSE_DURATION_BLOCK3);
         }
-	}
+    }
 
 	Part
 	{

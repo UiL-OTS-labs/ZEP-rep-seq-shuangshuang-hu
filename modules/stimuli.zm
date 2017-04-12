@@ -15,14 +15,49 @@ HISTORY:
 
 \******************************************************************************/
 
+enum ItemType {
+    TYPE_A,         // Soundfile with an A type stimulus
+    TYPE_B          // same with B type of stimulus
+};
 
 // Item record used for the test phase item table.
 record TestItem
 {
     string tokens;         // target sequence of tokens, separated by commas
     string types;          // mapping of the target sequence to types
-}
+};
 
+// This describes a part from the test the button 
+record ButtonItem
+{
+    ItemType    item;
+    string      fn;
+};
+
+
+// fill with stimuli for the press-the-button part.
+ButtonItem[..] items_a  =
+{
+    {TYPE_A, "A1.wav"},
+    {TYPE_A, "A2.wav"},
+    {TYPE_A, "A3.wav"},
+    {TYPE_A, "A10.wav"},
+    {TYPE_A, "A11.wav"},
+    {TYPE_A, "A12.wav"}
+};
+
+ButtonItem[..] items_b =
+{
+    {TYPE_B, "B1.wav"},
+    {TYPE_B, "B2.wav"},
+    {TYPE_B, "B3.wav"},
+    {TYPE_B, "B10.wav"},
+    {TYPE_B, "B11.wav"},
+    {TYPE_B, "B12.wav"}
+};
+
+
+//Sequences for the pre_test.
 TestItem[..] pretest_sequences = 
 {
 	{"A1", "A"},
@@ -35,6 +70,7 @@ TestItem[..] pretest_sequences =
 	{"A4", "A"},
 };
 
+// Practice items.
 TestItem[..] practice_sequences = 
 {
 	{"A1,A4"    , "AA"},
@@ -42,7 +78,11 @@ TestItem[..] practice_sequences =
 	{"B3,A5,B4" , "BAB"},
 };
 
-TestItem[..] seq_block1 = //AA, AB, BA, BB, AA, AB, BA, BB.
+
+// Test Items They must be formatted similar to the practice items.
+// So separate the names of the files without directory and extension
+// separated by a comma.
+TestItem[..] seq_block1 = 
 {
 	{"EF", "AA"},
 	{"EP", "AB"},
@@ -54,7 +94,7 @@ TestItem[..] seq_block1 = //AA, AB, BA, BB, AA, AB, BA, BB.
 	{"OP", "BB"},	
 };
 
-TestItem[..] seq_block2 = //AABA, AABB, ABAA, ABBA, BAAA, BAAB, BABB, BBAB
+TestItem[..] seq_block2 =
 {
 	{"ABC", "AAB"}, 
 	{"DEF", "ABB"}, 
@@ -66,7 +106,7 @@ TestItem[..] seq_block2 = //AABA, AABB, ABAA, ABBA, BAAA, BAAB, BABB, BBAB
 	{"WOP", "AAA"},
 };
 
-TestItem[..] seq_block3 = //AABABA, AABBAB, ABAAAB, ABBABA, BAABBA, BABAAB, BBABAB, BBBABA
+TestItem[..] seq_block3 =
 {
 	{"ABWC", "AABA"}, 
 	{"EFOP", "AABB"}, 

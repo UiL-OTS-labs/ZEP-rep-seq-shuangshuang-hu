@@ -202,33 +202,9 @@ Page test_page
 			// kill all timers or players
             full_abort();
 			audio.abort();
-			//stimulus.abort();
         }
     }
     
-//	Timer stimulus
-//	{
-//        string token;
-//
-//        on_event:expire()
-//        {
-//            if(tok_idx < tokens.size) //if the sequence hasn't ran out...
-//            {				
-//                token = tokens[tok_idx++];
-//
-//                // play the sound
-//                audio.abort(); //stop any previous playing sounds
-//                end_tone.abort();
-//                audio.playback.device = sound_output_device;
-//                audio.clip.file = stimuli_dir() + "sounds/" + token + ".wav"; // i.e. ./stimuli/sounds/A.wav
-//                audio.start();
-//
-//                // restart timer with the correct stimulus duration
-//                this.start(this.expire_time + STIMULUS_DURATION + INTERSTIMULUS_INTERVAL);
-//            } 
-//        }
-//	}
-	
     SoundChain audio
     {
         SoundFile clip {}
@@ -370,12 +346,12 @@ Page test_page
 
             if (!test_page_overlay.start_feedback(this, correctness, 
                     FEEDBACK_DURATION))
-                { 
-                      if(end_play_sound_filename == "")
+            { 
+                if(end_play_sound_filename == "")
                     done(CONTINUE);
                 else
                     end_tone.play(end_play_sound_filename);
-                }
+            }
         }
         
         on_event:message()

@@ -29,8 +29,7 @@ import shuffle;
 import output;
 
 import listening::task;
-import button::task;
-import pre_test::task;
+import pretest::task;
 import instruct::practice;
 import test::task;
 
@@ -95,7 +94,7 @@ Experiment experiment
         {
             // Each time the task arrives here another practice run
             // is conducted.
-            button::action(this);
+            pretest::action(this);
         }
     }
 

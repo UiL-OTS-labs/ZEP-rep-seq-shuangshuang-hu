@@ -1,0 +1,100 @@
+//namespace: instruct
+
+/******************************************************************************\
+FILE:           practice.zp
+AUTHOR:         Chris van Run (UiL-OTS)
+ADAPTED BY:     -
+
+EXPERIMENT:     A poper Digit Span test
+
+DESCRIPTION: This contains the practice block that shows
+
+HISTORY:
+2014-05-15 CvR   Created.
+
+\******************************************************************************/
+import pause_page;
+//import test_page;
+
+Block practice
+{
+    Block practice_task
+    {
+        on_event:entry()
+        {
+            num_cycles = TESTITEMS.size;		
+            
+            // Prepare test page: feedback, progress bar, and prompt enabled.
+            test_page.setup(num_cycles, true, true);
+        }
+
+
+        on_event:exit()
+        {
+            test_page.cleanup();
+        }
+
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                TestItem item = TESTITEMS[practice_task.cycle];
+                test_page.action(this, item, reference_time, practice_task.cycle);
+            }
+
+            on_event:exit()
+            {
+                TestOutput output;
+                output.trial = TRIAL_NR;
+                output.block = 0; 
+                
+                output.sequence = test_page.item.tokens;
+                output.response = test_page.response.value;
+                output.correct= test_page.response.correct;
+                output.rt_complete = test_page.response.rt_complete;
+                
+                output.rt1 = test_page.response.rts[1];
+                output.rt2 = test_page.response.rts[2];
+                output.rt3 = test_page.response.rts[3];
+                output.rt4 = test_page.response.rts[4];
+                output.rt5 = test_page.response.rts[5];
+                output.rt6 = test_page.response.rts[6];
+                output.rt7 = test_page.response.rts[7];
+                output.rt8 = test_page.response.rts[8];
+                output.rt9 = test_page.response.rts[9];
+                output.rt10 = test_page.response.rts[10];
+
+                practice_output_append(output);
+            }
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms,500ms);
+        }
+    }
+
+
+    Part end_of_training
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(AFTER_TRAINING_TEXT, true);
+            pause_page.action_non_respond(this,DISABLE_PAUSE_BUTTONS_DURATION);
+        }
+    }
+}
+
+void practice_call(Part caller)
+{
+	TESTITEMS = practice_sequences;
+	RESPONSE_DURATION = RESPONSE_DURATION_PRAC;
+	
+	// Activate the task. When the task is done, the registered caller
+    // (c.q. the main experiment object) will automatically be signalled.
+    practice.enter(caller);
+}

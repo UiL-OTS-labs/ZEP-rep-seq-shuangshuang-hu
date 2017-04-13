@@ -30,7 +30,7 @@ import output;
 
 import listening::task;
 import pretest::task;
-import instruct::practice;
+import practice_phase::practice;
 import test::task;
 
 int         BLOCK_NR;               // Which block 
@@ -129,14 +129,22 @@ Experiment experiment
 	{
 		on_event:entry()
         {
+            // CFG_GIVE_PRACTISE is global from defs.zm if set the
+            // practice phase is skipped.
 			if(CFG_GIVE_PRACTISE)
 			{	
-				instruct::practice_call(this);
+				practice_phase::practice_call(this);
 			}
             else
             {
                 signal(first_practice, CONTINUE);
             }
+        }
+
+        on_event:exit()
+        {
+            // save the practice phase.
+            practice_save();
         }
 	}
 	

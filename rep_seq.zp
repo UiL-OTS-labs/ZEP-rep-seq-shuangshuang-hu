@@ -86,35 +86,15 @@ Experiment experiment
         }
 
     }
-    
-    // Press button A for an A type stimulus and button B for ...
+   
+    // Pretest and press the button phase.
     Part press_button_phase
     {
         on_event:entry()
         {
-            // Each time the task arrives here another practice run
-            // is conducted.
             pretest::action(this);
         }
     }
-
-    Part
-    {
-        on_event:entry()
-        {
-            pause_page.set_text(AFTER_PRACTICE_TEXT, true);
-            pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
-        }
-    }
-	
-
-	Part
-	{
-		on_event:entry()
-		{
-			blank_page.action_auto(this, 500ms,500ms);
-		}
-	}
 
 	Part
 	{

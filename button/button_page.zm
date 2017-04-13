@@ -329,7 +329,8 @@ Page button_page
                 }
                 else if (value == -1) // Continue pressed
                 {
-                    println("Continue button pressed.");
+                    // not really a usefull message.
+                    // println("Continue button pressed.");
                 }
                 else
                 {
@@ -396,7 +397,8 @@ Page button_page
         
         control.button_box.disable_buttons();
         control.target = null;
-        
+
+        continue_pressed = false;
         // don't cleanup answer 
     }
 

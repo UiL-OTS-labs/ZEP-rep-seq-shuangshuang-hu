@@ -38,10 +38,19 @@ Block task
         }
     }
 
-    Part blank
+    // sets up statistics for the button and pretest.
+    // Part to jump back to when pretest criterion isn't met.
+    Part pre_button_blank
     {
         on_event:entry()
         {
+            // each time we arrive here we have another run on the
+            // press-the-button phase and pretest.
+            nth_practice++;
+            nth_button      = 0;
+            nth_a_pressed   = 0;
+            nth_b_pressed   = 0;
+
             blank_page.action_auto(this, 500ms);
         }
     }
@@ -85,11 +94,150 @@ Block task
         on_event:entry()
         {
             if (!button_page.continue_pressed)
+                // Redo a button trial
                 trial.enter();
             else {
+                // cleanup and save
                 button_page.cleanup();
-                leave_pressing.enter();
+                button_phase_save();
+
+                pretest_instruction.enter();
             }
+        }
+    }
+
+    Part pretest_instruction
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(AFTER_PRACTICE_TEXT, true);
+            pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
+        }
+    }
+    
+    Block pretest
+    {
+        bool passed = false;        // If true, the participant passed the pretest.
+        int  number_pretest = 0;    // Counts the number of pretest runs.
+        int correct;
+
+        on_event:entry()
+        {
+            correct = 0;
+            number_pretest++;
+
+            TESTITEMS = pretest_sequences;
+            RESPONSE_DURATION = 2s;
+
+            num_cycles = TESTITEMS.size;		
+            // Prepare test page: no feedback, no progress bar, and prompt disabled.
+            test_page.setup(num_cycles, true, true, PRE_TEST_OVERLAY_TEXT);
+        }
+
+        on_event:exit()
+        {
+            if(correct >= NUMBER_OF_MINIMUM_CORRECT_PRETEST)
+                passed = true;
+
+            pretest_save();
+        }
+
+        Trial trial
+        {
+            on_event:entry()
+            {
+                 TestItem item = TESTITEMS[pretest.cycle];
+                 test_page.action(this,
+                                  item,
+                                  reference_time,
+                                  pretest.cycle,
+                                  "beep.wav"
+                                  );
+            }
+
+            on_event:exit()
+            {
+                if (test_page.response.correct != 1)
+                    pretest.correct = 0;
+                else
+                    pretest.correct++;
+
+                if (NUMBER_OF_MINIMUM_CORRECT_PRETEST > 0 &&
+                    pretest.correct >= NUMBER_OF_MINIMUM_CORRECT_PRETEST)
+                {
+                    pretest.num_cycles = pretest.cycle;
+                }
+
+                TestOutput output;
+                output.trial = TRIAL_NR;
+                output.block = number_pretest;
+                
+                output.sequence = test_page.item.tokens;
+                output.response = test_page.response.value;
+                output.correct= test_page.response.correct;
+                output.rt_complete = test_page.response.rt_complete;
+                
+                output.rt1 = test_page.response.rts[1];
+                output.rt2 = test_page.response.rts[2];
+                output.rt3 = test_page.response.rts[3];
+                output.rt4 = test_page.response.rts[4];
+                output.rt5 = test_page.response.rts[5];
+                output.rt6 = test_page.response.rts[6];
+                output.rt7 = test_page.response.rts[7];
+                output.rt8 = test_page.response.rts[8];
+                output.rt9 = test_page.response.rts[9];
+                output.rt10 = test_page.response.rts[10];
+
+                pretest_output_append(output);
+
+                test_page.cleanup();
+            }
+        }
+
+        bool test_passed()
+        {
+            return passed;
+        }
+
+        int nth_pretest()
+        {
+            return number_pretest;
+        }
+    }
+
+    TransientPart test_exit
+    {
+        on_event:entry()
+        {
+            if (pretest.test_passed()) // skip the goback instruction.
+                leave_pressing.enter();
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 250ms);
+        }
+    }
+
+    // presents the redo the 
+    Part redo_button_phase_instruction
+    {
+        on_event:entry()
+        {
+            pause_page.set_text(SECOND_PRETEST_INSTRUCTION);
+            pause_page.action(this);
+        }
+    }    
+    
+    // Jump back to the blank before the press the button phase
+    TransientPart go_back
+    {
+        on_event:entry()
+        {
+            pre_button_blank.enter();
         }
     }
     
@@ -105,9 +253,8 @@ Block task
 
 }
 
-void action(Part caller, int nth_practice)
+void action(Part caller)
 {
-    task.nth_practice = nth_practice;
     task.enter(caller);
 }
 

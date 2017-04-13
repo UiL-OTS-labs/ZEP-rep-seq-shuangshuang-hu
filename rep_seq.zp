@@ -43,7 +43,6 @@ TestItem[]	TESTITEMS;              // Placeholder for the test items at hand.
 
 Experiment experiment
 {
-    int nth_practice = 0;
 
     on_event:entry()
     {	
@@ -74,7 +73,6 @@ Experiment experiment
 	{
 		on_event:entry()
         {
-			println("==> Instructing <==");
 			pause_page.set_text(INSTRUCTION_TEXT, true);
 			pause_page.action_non_respond(this, DISABLE_PAUSE_BUTTONS_DURATION);
 		}
@@ -90,36 +88,6 @@ Experiment experiment
 
     }
     
-    // Skip the instruction presented to a participant when he/she
-    // fails the pre_test.
-    TransientPart jump_to_press_the_buttton
-    {
-        on_event:entry()
-        {
-            press_button_phase.enter();
-        }
-    }
-
-    // if a participant fails to meet the minimal performance on the pretest
-    // we jump back to this part.
-    Part blank_prior_to_2nd_pt_inst
-    {
-        on_event:entry()
-        {
-            blank_page.action_auto(this, 250ms, 250ms);
-        }
-    }
-    
-    // Instructions for when the pre_test criterion wasn't met.
-    Part second_pretest_instruction
-    {
-        on_event:entry()
-        {
-            pause_page.set_text(SECOND_PRETEST_INSTRUCTION);
-            pause_page.action(this);
-        }
-    }
-
     // Press button A for an A type stimulus and button B for ...
     Part press_button_phase
     {
@@ -127,8 +95,7 @@ Experiment experiment
         {
             // Each time the task arrives here another practice run
             // is conducted.
-            nth_practice++;
-            button::action(this, nth_practice);
+            button::action(this);
         }
     }
 
@@ -150,40 +117,6 @@ Experiment experiment
 		}
 	}
 
-	Part
-	{
-		on_event:entry()
-		{
-			pre_test::task_call(this,2s, nth_practice);
-		}
-	}
-
-    // If participant failed the test jump back to the blank page between
-    // 
-    TransientPart DecideReDoPreTest
-    {
-        on_event:entry()
-        {
-            if (!pre_test::pretest.test_passed() ) {
-                // run the pretest and button phase again.
-                blank_prior_to_2nd_pt_inst.enter();
-            }
-            else {
-                // save pretest TODO
-                button_phase_save();
-                pretest_save();
-            }
-        }
-    }
-	
-	Part
-	{
-		on_event:entry()
-		{
-			blank_page.action_auto(this, 500ms,500ms);
-		}
-	}
-	
 	Part
 	{
 		on_event:entry()

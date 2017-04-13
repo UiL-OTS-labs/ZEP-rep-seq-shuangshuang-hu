@@ -84,36 +84,18 @@ TestItem[..] practice_sequences =
 // separated by a comma.
 TestItem[..] seq_block1 = 
 {
-	{"EF", "AA"},
-	{"EP", "AB"},
-	{"QD", "BA"},
-	{"RS", "BB"},
-	{"AB", "AA"},
-	{"CX", "AB"},
-	{"TG", "BA"},
-	{"OP", "BB"},	
+	{"A1,A2", "AA"},
+	{"A3,B1", "AB"},
 };
 
 TestItem[..] seq_block2 =
 {
-	{"ABC", "AAB"}, 
-	{"DEF", "ABB"}, 
-	{"GHI", "ABA"}, 
-	{"JKL", "BAA"}, 
-	{"MNO", "BAB"}, 
-	{"PRS", "BBA"}, 
-	{"TUV", "BBB"}, 
-	{"WOP", "AAA"},
+	{"A4,A5,B2", "AAB"}, 
+	{"A6,B3,B4", "ABB"}, 
 };
 
 TestItem[..] seq_block3 =
 {
-	{"ABWC", "AABA"}, 
-	{"EFOP", "AABB"}, 
-	{"GQFB", "ABAA"}, 
-	{"ARWC", "ABBA"}, 
-	{"QABC", "BAAA"}, 
-	{"QABQ", "BAAB"}, 
-	{"NGNO", "BABB"}, 
-	{"OPGO", "BBAB"},
+	{"A6,A7,B5,A8", "AABA"}, 
+	{"A9,A10,B6,B7", "AABB"}, 
 };

@@ -90,22 +90,10 @@ void practice_output_append(TestOutput output)
     practice_output[practice_output.size - 1] = output;
 }
 
-// Writes test phase output table 1 contents to CSV file and clears the table.
-void test_output_save()
-{
-    // Append table to CSV file (create if non-existent). The filename 
-    // format is: <dbname>/<dbnum>/<expname>/ses<sesid>-<tblnum>.csv
-    //test_output.append(expdb.experiment.session.table_filename(1), 
-    //    "Test phase results");
-    //test_output.size = 0;
-    string fn = expdb.experiment.session.create_table(namespace_name, 1);
-    test_output.append(fn, "Test phase results");
-}
-
 // Saves the button output.
 void button_phase_save()
 {
-    string fn = expdb.experiment.session.create_table(namespace_name, 2);
+    string fn = expdb.experiment.session.create_table(namespace_name, 1);
     button_phase_output.append(fn, "Output button phase");
     button_phase_output.size = 0;
 }
@@ -113,7 +101,7 @@ void button_phase_save()
 // Save the pretest
 void pretest_save()
 {
-    string fn = expdb.experiment.session.create_table(namespace_name, 3);
+    string fn = expdb.experiment.session.create_table(namespace_name, 2);
     pretest_output.append(fn, "Output pre-test");
     pretest_output.size = 0;
 }
@@ -124,4 +112,16 @@ void practice_save()
     string fn = expdb.experiment.session.create_table(namespace_name, 3);
     practice_output.append(fn, "Output practice");
     practice_output.size = 0;
+}
+
+// Writes test phase output table 4 contents to CSV file and clears the table.
+void test_output_save()
+{
+    // Append table to CSV file (create if non-existent). The filename 
+    // format is: <dbname>/<dbnum>/<expname>/ses<sesid>-<tblnum>.csv
+    //test_output.append(expdb.experiment.session.table_filename(1), 
+    //    "Test phase results");
+    string fn = expdb.experiment.session.create_table(namespace_name, 4);
+    test_output.append(fn, "Test phase results");
+    test_output.size = 0;
 }

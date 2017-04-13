@@ -155,10 +155,6 @@ Experiment experiment
         {
             BLOCK_NR = BLOCK_NR + 1;
 
-            println("=============================================");
-            println("== Block 1                                 ==");
-            println("=============================================");
-
             if(shuffle_test_items(seq_block1) != OK)
             {
                 println("ERROR: something off with shuffle");
@@ -188,10 +184,6 @@ Experiment experiment
         {
 			BLOCK_NR = BLOCK_NR + 1;
 			
-			println("=============================================");
-			println("== Block 2                                ==");
-			println("=============================================");
-			
             if(shuffle_test_items(seq_block2) != OK)
             {
                 println("ERROR: something off with shuffle");
@@ -216,10 +208,6 @@ Experiment experiment
         on_event:entry()
         {
             BLOCK_NR = BLOCK_NR + 1;
-
-            println("=============================================");
-            println("== Block 3                                 ==");
-            println("=============================================");
 
             if(shuffle_test_items(seq_block3) != OK)
             {

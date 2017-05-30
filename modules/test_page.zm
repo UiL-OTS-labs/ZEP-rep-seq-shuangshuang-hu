@@ -20,6 +20,13 @@ test_output_append
 import std_sound_output_device;
 import splitstring;
 
+// Colors of the button during while it is pressed or not.
+// colors are int ARGB or RGB colors.
+const color UNPRESSED_LINE_PATTERN_COLOR    = rgbi:0/0/0;
+const color UNPRESSED_FILL_PATTERN_COLOR    = rgbi:64/0/0/0;
+const color PRESSED_LINE_PATTERN_COLOR      = rgbi:0/0/0;
+const color PRESSED_FILL_PATTERN_COLOR      = rgbi:128/0/0/0;
+
 Page test_page
 {
     TestItem    	item;
@@ -129,10 +136,6 @@ Page test_page
 
             CircleShape buttonA
             {
-                color unpressed_line_pattern_color = color:black;
-                color pressed_line_pattern_color = color:red;
-                color unpressed_fill_pattern_color = color:slateblue;
-                color pressed_fill_pattern_color = color:black;
                 
                 init()
                 {
@@ -140,34 +143,50 @@ Page test_page
                     radius = 30;
                     line_width = 3;
 
-                    line_pattern_color =unpressed_line_pattern_color;
-                    fill_pattern_color = unpressed_fill_pattern_color;
+                    line_pattern_color = UNPRESSED_LINE_PATTERN_COLOR;
+                    fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                     is_visible = true;
                 }
                 
                 void pressed()
                 {
-                    if(line_pattern_color == unpressed_line_pattern_color)
+                    if(line_pattern_color == UNPRESSED_LINE_PATTERN_COLOR)
                     {
-                        line_pattern_color = pressed_line_pattern_color;
-                        fill_pattern_color = pressed_fill_pattern_color;
+                        line_pattern_color = PRESSED_LINE_PATTERN_COLOR;
+                        fill_pattern_color = PRESSED_FILL_PATTERN_COLOR;
                     }
                     else
                     {
-                        line_pattern_color = unpressed_line_pattern_color;
-                        fill_pattern_color = unpressed_fill_pattern_color;
+                        line_pattern_color = UNPRESSED_LINE_PATTERN_COLOR;
+                        fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                     }
                 }
                 
-                Timer timer { expire() { pressed();}}
+                Timer timer
+                {
+                    on_event:expire()
+                    {
+                        pressed();
+                    }
+                }
             }
-                
+
+            TextShape button_a_text
+            {
+                on_event:init()
+                {
+                    text        = "A";
+                    is_visible  = true;
+                    font_family = TEST_PAGE_STIMULUS_FONT_FAMILY;
+                    font_size   = TEST_PAGE_STIMULUS_FONT_SIZE;
+                    line_pattern_color = rgbi:0/0/0;
+                    x           = -150 - string_width(text)/2;
+                    y           = 200 - string_height(text)/2;
+                }
+            }
+
             CircleShape buttonB
             {   
-                color unpressed_line_pattern_color = color:black;
-                color pressed_line_pattern_color = color:red;
-                color unpressed_fill_pattern_color = color:darkorange; 
-                color pressed_fill_pattern_color = color:black;
                             
                 init()
                 {
@@ -175,26 +194,48 @@ Page test_page
                     radius = 30;
                     line_width = 3;
 
-                    line_pattern_color = unpressed_line_pattern_color;
-                    fill_pattern_color = unpressed_fill_pattern_color;
+                    line_pattern_color = UNPRESSED_LINE_PATTERN_COLOR;
+                    fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                     is_visible = true;
                 }
                 
                 void pressed()
                 {
-                    if(line_pattern_color == unpressed_line_pattern_color)
+                    if(line_pattern_color == UNPRESSED_LINE_PATTERN_COLOR)
                     {
-                        line_pattern_color = pressed_line_pattern_color;
-                        fill_pattern_color = pressed_fill_pattern_color;
+                        line_pattern_color = PRESSED_LINE_PATTERN_COLOR;
+                        fill_pattern_color = PRESSED_FILL_PATTERN_COLOR;
                     }
                     else
                     {
-                        line_pattern_color = unpressed_line_pattern_color;
-                        fill_pattern_color = unpressed_fill_pattern_color;
+                        line_pattern_color = UNPRESSED_LINE_PATTERN_COLOR;
+                        fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                     }
                 }
-                Timer timer { expire() { pressed();}}
+
+                Timer timer
+                {
+                    expire()
+                    {
+                        pressed();
+                    }
+                }
             }
+            
+            TextShape button_b_text
+            {
+                on_event:init()
+                {
+                    text        = "B";
+                    is_visible  = true;
+                    font_family = TEST_PAGE_STIMULUS_FONT_FAMILY;
+                    font_size   = TEST_PAGE_STIMULUS_FONT_SIZE;
+                    line_pattern_color = rgbi:0/0/0;
+                    x           = 150 - string_width(text)/2;
+                    y           = 200 - string_height(text)/2;
+                }
+            }
+
 		}
 		
         void reset()

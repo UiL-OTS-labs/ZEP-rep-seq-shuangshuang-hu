@@ -82,7 +82,7 @@ Page test_page
         }
 
 		CanvasGadget canvas
-		{	
+		{
 			init()
 			{
 				fill_pattern_color = TEST_PAGE_COLOR;
@@ -166,8 +166,17 @@ Page test_page
                 {
                     on_event:expire()
                     {
-                        pressed();
+                        println("Expired buttonA");
+                        buttonA.cleanup();
+                        //pressed();
                     }
+                }
+
+                void cleanup()
+                {
+                    timer.abort();
+                    line_pattern_color = UNPRESSED_LINE_PATTERN_COLOR;
+                    fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                 }
             }
 
@@ -217,8 +226,16 @@ Page test_page
                 {
                     expire()
                     {
-                        pressed();
+                        println("Expired buttonB");
+                        buttonB.cleanup();
                     }
+                }
+
+                void cleanup()
+                {
+                    timer.abort();
+                    line_pattern_color = UNPRESSED_LINE_PATTERN_COLOR;
+                    fill_pattern_color = UNPRESSED_FILL_PATTERN_COLOR;
                 }
             }
             
@@ -236,6 +253,13 @@ Page test_page
                 }
             }
 
+            void cleanup()
+            {
+                buttonA.cleanup();
+                buttonB.cleanup();
+                // TextShape don need a cleanup.
+            }
+
 		}
 		
         void reset()
@@ -244,6 +268,12 @@ Page test_page
             full_abort();
 			audio.abort();
         }
+
+        void cleanup()
+        {
+            canvas.cleanup();
+        }
+
     }
     
     SoundChain audio
@@ -318,11 +348,12 @@ Page test_page
             correct = -1;
         }
 
+        // Toggles the buttons and timers.
 		void process_hit(int val, time t) // catch-function for the button box
 		{
 			if(val == 0) // A
             {
-				process_hit("A", t);
+				save_hit("A", t);
                 if(!layout.canvas.buttonA.timer.is_running)
                 {
                     layout.canvas.buttonA.pressed();
@@ -333,7 +364,7 @@ Page test_page
             }
 			else if(val == 1) // B
             {
-				process_hit("B", t);
+				save_hit("B", t);
                 if(!layout.canvas.buttonB.timer.is_running)
                 {
                     layout.canvas.buttonB.pressed();
@@ -344,11 +375,11 @@ Page test_page
             }
 		}
 		
-        void process_hit(string val, time t)
+        // Save's the hit for the current trial when it is valid
+        void save_hit(string val, time t)
         {
             HitType validity = hit(t);
 
-            // Accept the hits and save the reaction times
             if (validity == HIT_VALID)
             {
                 value = value + val;

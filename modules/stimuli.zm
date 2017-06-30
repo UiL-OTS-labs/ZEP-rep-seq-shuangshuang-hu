@@ -27,7 +27,7 @@ record TestItem
     string types;          // mapping of the target sequence to types
 };
 
-// This describes a part from the test the button 
+// This describes a part from the test the button
 record ButtonItem
 {
     ItemType    item;
@@ -58,7 +58,7 @@ ButtonItem[..] items_b =
 
 
 //Sequences for the pre_test.
-TestItem[..] pretest_sequences = 
+TestItem[..] pretest_sequences =
 {
     {"A8"   , "A"},
     {"B4"   , "B"},
@@ -75,7 +75,7 @@ TestItem[..] pretest_sequences =
 };
 
 // Practice items.
-TestItem[..] practice_sequences = 
+TestItem[..] practice_sequences =
 {
     {"A1,A4"        , "AA"},
     {"B10,A2"       , "BA"},
@@ -87,11 +87,11 @@ TestItem[..] practice_sequences =
 // Test Items They must be formatted similar to the practice items.
 // So separate the names of the files without directory and extension
 // separated by a comma.
-TestItem[..] seq_block1 = 
+TestItem[..] seq_block1 =
 {
     {"A8,A3"    , "AA"},
     {"B11,B14"  , "BB"},
-    {"A12,B13"  , "BA"},
+    {"A12,B13"  , "AB"},
     {"B6,B17"   , "BB"},
     {"B1,A16"   , "BA"},
     {"A17,A7"   , "AA"},
@@ -101,20 +101,20 @@ TestItem[..] seq_block1 =
 
 TestItem[..] seq_block2 =
 {
-    {"A4,A11,B8"    , "AAB"}, 
-    {"A6,B3,B10"    , "ABB"}, 
-    {"B5,B7,A14"    , "BBA"}, 
-    {"A16,B4,A12"     , "ABA"}, 
-    {"B3,A13,A9"   , "BAA"}, 
-    {"A5,A15,A2"    , "AAA"}, 
-    {"B14,A18,B10"  , "BAB"}, 
-    {"B16,B9,B1"   , "BBB"}, 
+    {"A4,A11,B8"    , "AAB"},
+    {"A6,B3,B10"    , "ABB"},
+    {"B5,B7,A14"    , "BBA"},
+    {"A16,B4,A12"     , "ABA"},
+    {"B3,A13,A9"   , "BAA"},
+    {"A5,A15,A2"    , "AAA"},
+    {"B14,A18,B10"  , "BAB"},
+    {"B16,B9,B1"   , "BBB"},
 };
 
 TestItem[..] seq_block3 =
 {
-    {"A6,A7,B15,A18"      , "AABA"}, 
-    {"A9,A10,B1,B13"     , "AABB"}, 
+    {"A6,A7,B15,A18"      , "AABA"},
+    {"A9,A10,B1,B13"     , "AABB"},
     {"B1,A15,A12,B8"   , "BAAB"},
     {"A11,B16,A1,A18"   , "ABAA"},
     {"B9,A4,A14,A2"      , "BAAA"},
@@ -122,4 +122,3 @@ TestItem[..] seq_block3 =
     {"B4,B3,A13,B7"      , "BBAB"},
     {"B11,A17,B3,B5"    , "BABB"},
 };
-

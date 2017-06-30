@@ -45,7 +45,7 @@ const dur       INTERTRIAL_INTERVAL             		= 1500ms;
 // fit this roughly to the length of your audio files. (Yuck...)
 const dur 		STIMULUS_DURATION              			= 1250ms;
 
-const dur 		INTERSTIMULUS_INTERVAL					= 200ms;
+const dur 		INTERSTIMULUS_INTERVAL					= 225ms;
 
 // Duration of the feedback presentation.
 const dur       FEEDBACK_DURATION               		= 800ms;
@@ -67,7 +67,7 @@ const dur 		PRAC_BUTTON_SHOW_PRESSED_DUR			= 200ms;
 
 const dur		DURATION_TO_COMPLETE_INSTRUCTION = 2s;
 
-const int		NUMBER_OF_MINIMUM_CORRECT_PRETEST = 	6;
+const int		NUMBER_OF_MINIMUM_CORRECT_PRETEST = 	5;
 const bool 		CFG_GIVE_PRACTISE 						= true;				// give practice all together? Default (true).
 // Dont change, a little more must be changed to that just adapting this number.
 const int 		MAX_NUMBER_OF_RESPONSES					= 10;				// Should be increased if the preset length is increased

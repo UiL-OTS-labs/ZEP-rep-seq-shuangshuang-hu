@@ -39,21 +39,21 @@ record ButtonItem
 ButtonItem[..] items_a  =
 {
     {TYPE_A, "A1.wav"},
-    {TYPE_A, "A2.wav"},
-    {TYPE_A, "A3.wav"},
     {TYPE_A, "A4.wav"},
-    {TYPE_A, "A5.wav"},
-    {TYPE_A, "A6.wav"}
+    {TYPE_A, "A10.wav"},
+    {TYPE_A, "A7.wav"},
+    {TYPE_A, "A15.wav"},
+    {TYPE_A, "A17.wav"}
 };
 
 ButtonItem[..] items_b =
 {
-    {TYPE_B, "B1.wav"},
-    {TYPE_B, "B2.wav"},
-    {TYPE_B, "B3.wav"},
-    {TYPE_B, "B4.wav"},
     {TYPE_B, "B5.wav"},
-    {TYPE_B, "B6.wav"}
+    {TYPE_B, "B11.wav"},
+    {TYPE_B, "B3.wav"},
+    {TYPE_B, "B13.wav"},
+    {TYPE_B, "B16.wav"},
+    {TYPE_B, "B9.wav"}
 };
 
 
@@ -61,14 +61,14 @@ ButtonItem[..] items_b =
 TestItem[..] pretest_sequences = 
 {
     {"A8"   , "A"},
+    {"B4"   , "B"},
     {"A11"  , "A"},
-    {"B4"   , "B"},
     {"B2"   , "B"},
-    {"B3"   , "B"},
-    {"A14"  , "A"},
-    {"B4"   , "B"},
-    {"A4"   , "A"},
+    {"B13"   , "B"},
+    {"A16"  , "A"},
     {"B1"   , "B"},
+    {"A4"   , "A"},
+    {"B9"   , "B"},
     {"A12"  , "A"},
     {"B17"  , "B"},
     {"A3"   , "A"},
@@ -80,7 +80,7 @@ TestItem[..] practice_sequences =
     {"A1,A4"        , "AA"},
     {"B10,A2"       , "BA"},
     {"B3,A5,B12"    , "BAB"},
-    {"B2,B4,A11,A16", "BBAA"},
+    {"B2,B4,A11"    , "BBA"},
 };
 
 
@@ -104,22 +104,22 @@ TestItem[..] seq_block2 =
     {"A4,A11,B8"    , "AAB"}, 
     {"A6,B3,B10"    , "ABB"}, 
     {"B5,B7,A14"    , "BBA"}, 
-    {"A7,B4,A3"     , "ABA"}, 
-    {"B12,A13,A9"   , "BAA"}, 
+    {"A16,B4,A12"     , "ABA"}, 
+    {"B3,A13,A9"   , "BAA"}, 
     {"A5,A15,A2"    , "AAA"}, 
-    {"B14,A18,B13"  , "BAB"}, 
-    {"B16,B9,B17"   , "BBB"}, 
+    {"B14,A18,B10"  , "BAB"}, 
+    {"B16,B9,B1"   , "BBB"}, 
 };
 
 TestItem[..] seq_block3 =
 {
-    {"A6,A7,B5,A8"      , "AABA"}, 
-    {"A9,A10,B6,B7"     , "AABB"}, 
-    {"B10,A15,A12,B2"   , "BAAB"},
+    {"A6,A7,B15,A18"      , "AABA"}, 
+    {"A9,A10,B1,B13"     , "AABB"}, 
+    {"B1,A15,A12,B8"   , "BAAB"},
     {"A11,B16,A1,A18"   , "ABAA"},
-    {"B9,A4,A8,A5"      , "BAAA"},
-    {"B16,A13,A6,B17"   , "BAAB"},
-    {"B9,B4,A4,B1"      , "BBAB"},
-    {"B11,A1,B3,B12"    , "BABB"},
+    {"B9,A4,A14,A2"      , "BAAA"},
+    {"A16,B13,B6,A8"   , "ABBA"},
+    {"B4,B3,A13,B7"      , "BBAB"},
+    {"B11,A17,B3,B5"    , "BABB"},
 };
 

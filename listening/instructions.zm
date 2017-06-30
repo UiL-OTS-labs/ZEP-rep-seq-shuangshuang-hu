@@ -4,8 +4,6 @@
 */
 
 const string INSTRUCTION_A =
-        "Dear participant,\n\n"
-        "Thanks for participating in the experiment!\n"
         "You are going to learn two novel words, A and B.\n\n"
         "Please follow the instructions on the screen during the experiment.\n\n"
         "First, you are going to hear all the sounds that are word A.\n"

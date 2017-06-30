@@ -34,8 +34,9 @@ const string		WELCOME_TEXT        = "Welcome";
 const string		INSTRUCTION_TEXT    = 
         "<b>Dear participant,</b>\n\n"
         "Thank you for participating in the experiment!\n\n"
-        "In this experiment, you will learn two novel words, A and B.\n\n"
-        "You need to follow the instructions on the screen through the whole experiment.\n\n "
+        "In todayś experiment, you will learn 6 pairs of words. \n"
+        "Now you are going to learn the two new word A and B in Pair 1. \n\n "
+        "You need to follow the instructions on the screen through the whole experiment.\n "
         "<i>If you are ready, please press any button to start the experiment.</i>";
 
 // Instructions presented when the participant fails to meet the pretest
@@ -56,7 +57,7 @@ const string		AFTER_PRACTICE_TEXT			    =
        "In the practice, you will hear a word, and you need to\n"
        "differentiate whether the word is A or B by pressing the corresponding button.\n"
        "You can only press the button after you see ´please press the button´ on the screen.\n"
-       "An OK will follow your response.\n"
+       "A sound of OK will follow your response.\n"
        "You will get a feedback of correct or wrong after your response. \n\n"
        "You will proceed to the next stage after you make 5 times correct response in a row.\n"
        "Otherwise, you have to restart to do it again until you reach the criteria.\n"
@@ -68,16 +69,18 @@ const string		AFTER_TRAINING_TEXT				=
         "Now you are going to do the test!\n"
         "The procedure is the same as in the warm up.\n"
         "If you have any questions, please ask the experimenter.\n"
-        "<i>If you are ready, please press the RIGHT button to continue to proceed.</i>\n"
-        "<i>But if you want to do the warm-up again, please press the Left button to repeat.</i>\n";
+        "<i>If you are ready, please press the <b>LEFT</b> button to continue to proceed.</i>\n"
+        "<i>But if you want to do the warm-up again, please press the RIGHT button to repeat.</i>\n";
 
 const string 		AFTER_PRETEST_TEXT				=
         "Well done in the first practice!\n"
         "Now you are going to do a warm up!\n"
         "You will hear word A and B in order.\n"
         "For instance, if you hear word B followed by word A,\n"
-        "press the corresponding button B and A in such a BA order. \n"
-        "If you hear word A followed by word A, press button A and then button A again in such an A-A order.\n"
+        "press the corresponding button B and A in such a B-A order. \n"
+        "If you hear word A followed by word A, press the correspinding button A and again A in such an A-A order.\n"
+        "If you hear word A firstly, word B secondly, word A thirdly,\n"
+        "press button A firstly, button B secondly and button A lastly in such an A-B-A order.\n"
         "You will get a feedback of correct or wrong after your response. \n\n"
         "<b>Attention: You can only press the button after you see ´please press the button´ on the screen.</b>\n"
         "If you have any questions, please ask the experimenter.\n"
@@ -107,5 +110,5 @@ const string 		BLOCK_SWITCH_TEXT				=
 
 const string		STIMULUS_TEXT					= "Please press the buttons";
 const string 		INTER_TRAIL_TEXT				= "OK"; 
-const string		THANK_YOU_TEXT                  = "The end of the experiment.\n\nThanks for your participation!!";
+const string		THANK_YOU_TEXT                  = "The end of the experiment of Pair 1.\n\nYou can take 2-3 minutes'break and when you are ready, letś move on to learn Pair 2!!";
 

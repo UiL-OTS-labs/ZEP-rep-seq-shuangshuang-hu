@@ -23,11 +23,12 @@ enum ItemType {
 // Item record used for the test phase item table.
 record TestItem
 {
-    string tokens;         // target sequence of tokens, separated by commas
-    string types;          // mapping of the target sequence to types
+    int    item_id; // This maps the item_number back to the item tables
+    string tokens;  // target sequence of tokens, separated by commas
+    string types;   // mapping of the target sequence to types
 };
 
-// This describes a part from the test the button
+// This describes a part from the test the button 
 record ButtonItem
 {
     ItemType    item;
@@ -53,72 +54,73 @@ ButtonItem[..] items_b =
     {TYPE_B, "B3.wav"},
     {TYPE_B, "B13.wav"},
     {TYPE_B, "B16.wav"},
-    {TYPE_B, "B9.wav"}
+    {TYPE_B, "B7.wav"}
 };
 
 
 //Sequences for the pre_test.
-TestItem[..] pretest_sequences =
+TestItem[..] pretest_sequences = 
 {
-    {"A8"   , "A"},
-    {"B4"   , "B"},
-    {"A11"  , "A"},
-    {"B2"   , "B"},
-    {"B13"   , "B"},
-    {"A16"  , "A"},
-    {"B1"   , "B"},
-    {"A4"   , "A"},
-    {"B9"   , "B"},
-    {"A12"  , "A"},
-    {"B17"  , "B"},
-    {"A3"   , "A"},
+    {1 ,"A8"   , "A"},
+    {2 ,"A11"  , "A"},
+    {3 ,"B4"   , "B"},
+    {4 ,"B2"   , "B"},
+    {5 ,"B13"  , "B"},
+    {6 ,"A16"  , "A"},
+    {7 ,"B1"   , "B"},
+    {8 ,"A4"   , "A"},
+    {9 ,"B8"   , "B"},
+    {10,"A12"  , "A"},
+    {11,"B17"  , "B"},
+    {12,"A3"   , "A"},
 };
 
 // Practice items.
-TestItem[..] practice_sequences =
+TestItem[..] practice_sequences = 
 {
-    {"A1,A4"        , "AA"},
-    {"B10,A2"       , "BA"},
-    {"B3,A5,B12"    , "BAB"},
-    {"B2,B4,A11"    , "BBA"},
+    {1 ,"A1,A4"        , "AA"},
+    {2 ,"B10,A2"       , "BA"},
+    {3 ,"B3,A5,B12"    , "BAB"},
+    {4 ,"B2,B4,A11"    , "BBA"},
 };
 
 
 // Test Items They must be formatted similar to the practice items.
 // So separate the names of the files without directory and extension
 // separated by a comma.
-TestItem[..] seq_block1 =
+TestItem[..] seq_block1 = 
 {
-    {"A8,A3"    , "AA"},
-    {"B11,B14"  , "BB"},
-    {"B13,A12"  , "BA"},
-    {"B6,B17"   , "BB"},
-    {"B1,A16"   , "BA"},
-    {"A17,A7"   , "AA"},
-    {"A10,B9"   , "AB"},
-    {"A11,B16"  , "AB"},
+    {1 ,"A8,A3"    , "AA"},
+    {2 ,"B11,B14"  , "BB"},
+    {3 ,"A12,B13"  , "AB"},
+    {4 ,"B6,B17"   , "BB"},
+    {5 ,"B1,A16"   , "BA"},
+    {6 ,"A17,A7"   , "AA"},
+    {7 ,"B5,A10"   , "BA"},
+    {8 ,"A11,B16"  , "AB"},
 };
 
 TestItem[..] seq_block2 =
 {
-    {"A4,A11,B8"    , "AAB"},
-    {"A6,B3,B10"    , "ABB"},
-    {"B5,B7,A14"    , "BBA"},
-    {"A16,B4,A12"     , "ABA"},
-    {"B3,A13,A9"   , "BAA"},
-    {"A5,A15,A2"    , "AAA"},
-    {"B14,A18,B10"  , "BAB"},
-    {"B16,B9,B1"   , "BBB"},
+    {1 ,"A4,A11,B8"    , "AAB"}, 
+    {2 ,"A6,B3,B10"    , "ABB"}, 
+    {3 ,"B5,B7,A14"    , "BBA"}, 
+    {4 ,"A16,B4,A12"   , "ABA"}, 
+    {5 ,"B3,A13,A9"    , "BAA"}, 
+    {6 ,"A5,A15,A2"    , "AAA"}, 
+    {7 ,"B14,A18,B10"  , "BAB"}, 
+    {8 ,"B16,B6,B1"    , "BBB"}, 
 };
 
 TestItem[..] seq_block3 =
 {
-    {"A6,A7,B15,A18"      , "AABA"},
-    {"A9,A10,B1,B13"     , "AABB"},
-    {"B1,A15,A12,B8"   , "BAAB"},
-    {"A11,B16,A1,A18"   , "ABAA"},
-    {"B9,A4,A14,A2"      , "BAAA"},
-    {"A16,B13,B6,A8"   , "ABBA"},
-    {"B4,B3,A13,B7"      , "BBAB"},
-    {"B11,A17,B3,B5"    , "BABB"},
+    {1 ,"A6,A7,B15,A18"   , "AABA"}, 
+    {2 ,"A9,A10,B1,B13"   , "AABB"}, 
+    {3 ,"B1,A15,A12,B8"   , "BAAB"},
+    {4 ,"A11,B16,A1,A18"  , "ABAA"},
+    {5 ,"B7,A4,A14,A2"    , "BAAA"},
+    {6 ,"A16,B13,B6,A8"   , "ABBA"},
+    {7 ,"B4,B3,A13,B7"    , "BBAB"},
+    {8 ,"B11,A17,B3,B5"   , "BABB"},
 };
+

@@ -19,6 +19,7 @@ HISTORY:
 record TestOutput
 {
 	int         trial;
+    int         trial_id;
 	int         block;
 	
     string 	    sequence;

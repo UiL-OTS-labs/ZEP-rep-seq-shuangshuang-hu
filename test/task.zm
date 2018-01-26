@@ -16,59 +16,62 @@ HISTORY:
 //import test_page;
 
 Block task
-	{
-		Block test_task
-		{
-			on_event:entry()
-			{
-				num_cycles = TESTITEMS.size;		
-				// Prepare test page: no feedback, no progress bar, and prompt disabled.
-				test_page.setup(num_cycles, false, false, "");
-			}
+{
+    Block test_task
+    {
+        on_event:entry()
+        {
+            num_cycles = TESTITEMS.size;		
+            // Prepare test page: no feedback, no progress bar, and prompt disabled.
+            test_page.setup(num_cycles, false, false, "");
+        }
 
-			on_event:exit()
-			{
-				test_page.cleanup();
-			}
+        on_event:exit()
+        {
+            test_page.cleanup();
+        }
 
-			Trial trial
-			{
-				on_event:entry()
-				{
-					TestItem item = TESTITEMS[test_task.cycle];
-					test_page.action(this, item, reference_time, test_task.cycle, "beep.wav");
-					TRIAL_NR = TRIAL_NR + 1;
-				}
-				
-				on_event:exit()
-				{				
-					//append to output
-					TestOutput output;
-					output.trial = TRIAL_NR;
-					output.block = BLOCK_NR;
-					
-					output.sequence = test_page.item.tokens;
-					output.response = test_page.response.value;
-					output.correct= test_page.response.correct;
-					output.rt_complete = test_page.response.rt_complete;
-					
-					output.rt1 = test_page.response.rts[1];
-					output.rt2 = test_page.response.rts[2];
-					output.rt3 = test_page.response.rts[3];
-					output.rt4 = test_page.response.rts[4];
-					output.rt5 = test_page.response.rts[5];
-					output.rt6 = test_page.response.rts[6];
-					output.rt7 = test_page.response.rts[7];
-					output.rt8 = test_page.response.rts[8];
-					output.rt9 = test_page.response.rts[9];
-					output.rt10 = test_page.response.rts[10];
-					
-					test_output_append(output);
-					test_output_save();
-				}
-			}
-		}
-	}
+        Trial trial
+        {
+            TestItem item;
+
+            on_event:entry()
+            {
+                item = TESTITEMS[test_task.cycle];
+                test_page.action(this, item, reference_time, test_task.cycle, "beep.wav");
+                TRIAL_NR = TRIAL_NR + 1;
+            }
+
+            on_event:exit()
+            {				
+                //append to output
+                TestOutput output;
+                output.trial    = TRIAL_NR;
+                output.trial_id = item.item_id;
+                output.block    = BLOCK_NR;
+
+                output.sequence = test_page.item.tokens;
+                output.response = test_page.response.value;
+                output.correct  = test_page.response.correct;
+                output.rt_complete = test_page.response.rt_complete;
+
+                output.rt1 = test_page.response.rts[1];
+                output.rt2 = test_page.response.rts[2];
+                output.rt3 = test_page.response.rts[3];
+                output.rt4 = test_page.response.rts[4];
+                output.rt5 = test_page.response.rts[5];
+                output.rt6 = test_page.response.rts[6];
+                output.rt7 = test_page.response.rts[7];
+                output.rt8 = test_page.response.rts[8];
+                output.rt9 = test_page.response.rts[9];
+                output.rt10 = test_page.response.rts[10];
+
+                test_output_append(output);
+                test_output_save();
+            }
+        }
+    }
+}
 
 void task_call(Part caller, TestItem[] t_testItem, dur t_response_dur)
 {
